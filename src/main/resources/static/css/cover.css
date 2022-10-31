@@ -1,0 +1,377 @@
+/*
+ * Globals
+ */
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+    color: #333;
+    text-shadow: none; /* Prevent inheritance from `body` */
+}
+
+
+/*
+ * Base structure
+ */
+
+body {
+    text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+}
+
+.cover-container {
+    max-width: 42em;
+}
+
+
+/*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+    padding: .25rem 0;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .5);
+    background-color: transparent;
+    border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-delimiter {
+    padding: .25rem 0;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .5);
+    background-color: transparent;
+    border-bottom: .25rem solid transparent;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+    border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+    margin-left: 1rem;
+}
+
+.nav-masthead .active {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+.modal-body {
+    background-color: #333;
+    text-align: left;
+}
+
+.modal-content {
+    background-color: #333;:
+}
+
+.modal-footer {
+    background-color: #333;
+    border-color: rgba(255, 255, 255, .25);
+}
+
+.modal-header {
+    background-color: #333;
+    border-color: rgba(255, 255, 255, .25);
+}
+
+.close {
+    color: white;
+    background-color: #333;
+    border: none;
+}
+
+.close:hover {
+    color: white;
+}
+
+hr {
+    border-color: rgba(255, 255, 255, .25);
+}
+
+a {
+    color: white;
+}
+
+a:hover {
+    color: rgba(255, 255, 255, .25);
+}
+
+.px-3 {
+    text-align: left;
+    text-anchor: start;
+}
+
+dd label input {
+    margin-right: 2px;
+}
+
+.card {
+    background-color: #333;
+    border-color: rgba(255, 255, 255, .25);
+}
+
+.card-body {
+    background-color: #333;
+    border-color: rgba(255, 255, 255, .25);
+}
+
+/* sign in FORM */
+#logreg-forms {
+    width: 412px;
+    margin: 10vh auto;
+    background-color: #333;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+#logreg-forms form {
+    width: 100%;
+    max-width: 410px;
+    padding: 15px;
+    margin: auto;
+}
+
+#logreg-forms .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#logreg-forms .form-control:focus {
+    z-index: 2;
+}
+
+#logreg-forms .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#logreg-forms .form-signin input[type="password"] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#logreg-forms .social-login {
+    width: 390px;
+    margin: 0 auto;
+    margin-bottom: 14px;
+}
+
+#logreg-forms .social-btn {
+    font-weight: 100;
+    color: white;
+    width: 190px;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+#logreg-forms a {
+    display: block;
+    padding-top: 10px;
+    color: lightseagreen;
+}
+
+#logreg-form .lines {
+    width: 200px;
+    border: 1px solid red;
+}
+
+
+#logreg-forms button[type="submit"] {
+    margin-top: 10px;
+}
+
+#logreg-forms .vk-btn {
+    background-color: #587ea3;
+}
+
+#logreg-forms .twitter-btn {
+    background-color: #55acee;
+}
+
+#logreg-forms .google-btn {
+    background-color: #DF4B3B;
+}
+
+#logreg-forms .facebook-btn {
+    background-color: #3C589C;
+}
+
+#logreg-forms .form-reset, #logreg-forms .form-signup {
+    display: none;
+}
+
+#logreg-forms .form-signup .social-btn {
+    width: 210px;
+}
+
+#logreg-forms .form-signup input {
+    margin-bottom: 2px;
+}
+
+.form-signup .social-login {
+    width: 210px !important;
+    margin: 0 auto;
+}
+
+/* Mobile */
+
+@media screen and (max-width: 500px) {
+    #logreg-forms {
+        width: 300px;
+    }
+
+    #logreg-forms .social-login {
+        width: 200px;
+        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+
+    #logreg-forms .social-btn {
+        font-size: 1.3rem;
+        font-weight: 100;
+        color: white;
+        width: 200px;
+        height: 56px;
+
+    }
+
+    #logreg-forms .social-btn:nth-child(1) {
+        margin-bottom: 5px;
+    }
+
+    #logreg-forms .social-btn span {
+        display: none;
+    }
+
+    #logreg-forms .twitter-btn:after {
+        content: 'Twitter';
+    }
+
+    #logreg-forms .google-btn:after {
+        content: 'Google+';
+    }
+
+    #logreg-forms .vk-btn:after {
+        content: 'VK';
+    }
+
+    #logreg-forms .facebook-btn:after {
+        content: 'Facebook';
+    }
+}
+
+.pagination-outer {
+    text-align: center;
+}
+
+.pagination {
+    font-family: 'Montserrat', sans-serif;
+    display: inline-flex;
+}
+
+.pagination li a.page-link {
+    color: #fff;
+    background-color: #2d3436;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+    padding: 0;
+    margin: 0 7px;
+    border: none;
+    border-radius: 0;
+    display: block;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease 0s;
+}
+
+.pagination li.active a.page-link,
+.pagination li a.page-link:hover,
+.pagination li.active a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:focus {
+    color: #fff;
+    background-color: #5a5c5a;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) inset;
+}
+
+.pagination li a.page-link:before {
+    content: '';
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    bottom: -5px;
+    right: -5px;
+    z-index: -1;
+    transition: all 0.3s ease 0s;
+}
+
+.pagination li a.page-link:hover:before,
+.pagination li a.page-link:focus:before,
+.pagination li.active a.page-link:before {
+    visibility: visible;
+    opacity: 1;
+}
+
+.error-text {
+    color: lightcoral;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.profile-link {
+    margin-right: 1rem;
+}
+
+.comments-send {
+    margin-top: 0.7em;
+}
+
+.register-button {
+    margin-top: 1.5em;
+}
+
+.modal-element {
+    margin-top: 0.5em;
+}
+
+.lang-select {
+    margin-top: 1em;
+}
+
+.modal-radio {
+    margin-left: 0.4em;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 480px) {
+    .pagination {
+        font-size: 0;
+        display: block;
+    }
+
+    .pagination li {
+        display: inline-block;
+        margin: 0 0 10px;
+    }
+}

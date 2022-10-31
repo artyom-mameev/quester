@@ -1,0 +1,31 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript">/*<![CDATA[*/
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const INTERNAL_SERVER_ERROR_STRING = /*[[#{error.500}]]*/""; /*]]>*/
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + INTERNAL_SERVER_ERROR_STRING);
+});
+</script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <h4 class="text-center">500 Internal Server Error</h4>
+        <div class="text-center"><label th:text="#{error.500}"></label></div>
+    </main>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

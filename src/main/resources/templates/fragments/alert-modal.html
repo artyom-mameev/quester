@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<div class="modal" id="alertModal" role="dialog" tabindex="-1"
+     th:fragment="alertModal">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalTitle"></h5>
+                <button aria-label="Close" class="close" data-dismiss="modal"
+                        type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="no-bottom-margin" id="alertModalBodyText"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-dismiss="modal"
+                        id="alertModalYesButton" th:text="#{dialog.yes}"
+                        type="button"></button>
+                <button class="btn btn-secondary" data-dismiss="modal"
+                        id="alertModalNoButton" th:text="#{dialog.no}"
+                        type="button"></button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

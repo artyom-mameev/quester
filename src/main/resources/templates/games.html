@@ -1,0 +1,164 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript"> /*<![CDATA[*/
+const MODE = /*[[${mode}]]*/"";
+const AUTHOR_ID = /*[[${games != null and !games.empty} ? ${games[0].getUser().getId()} : null]]*/-1;
+const AUTHOR_NAME = /*[[${games != null and !games.empty} ? ${games[0].getUser().getUsername()} : null]]*/"";
+const CURRENT_USER_ID = /*[[${user} != null ? ${user.id} : -1]]*/-1;
+
+const TOTAL_PAGES = /*[[${totalPages}]]*/ '';
+const CURRENT_PAGE = /*[[${currentPage}]]*/ '';
+
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const GAMES_STRING = /*[[#{games.games}]]*/"";
+const GAMES_FROM_USER_STRING = /*[[#{games.games-from}]]*/"";
+const GAMES_IN_WORK_STRING = /*[[#{games.games-in-work}]]*/"";
+const YOUR_FAVORITES_STRING = /*[[#{games.your-favorites}]]*/"";
+const CANNOT_MAKE_A_FAVORITE_STRING = /*[[#{error.cannot-make-a-favorite}]]*/"";
+const CANNOT_UNFAVORITE_STRING = /*[[#{error.cannot-unfavorite}]]*/"";
+const ARE_YOU_SURE_STRING = /*[[#{dialog.are-you-sure}]]*/"";
+const DELETE_GAME_STRING = /*[[#{game.delete-game}]]*/"";
+const CANNOT_DELETE_THE_GAME_STRING = /*[[#{error.cannot-delete-the-game}]]*/"";
+const YES_STRING = /*[[#{dialog.yes}]]*/"";
+const ERROR_STRING = /*[[#{error.error}]]*/"";
+const ERROR_IS_OCCURRED_STRING = /*[[#{error.error-is-occurred}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    switch (MODE) {
+        case "ALL":
+            setTitle(APP_NAME_STRING + " - " + GAMES_STRING);
+            setActiveMenu("play-navbar");
+            break;
+        case "FAVORITED_BY_USER":
+            setTitle(APP_NAME_STRING + " - " + YOUR_FAVORITES_STRING);
+            setActiveMenu("user-navbar");
+            break;
+        case "CREATED_BY_USER":
+            setTitle(APP_NAME_STRING + " - " + GAMES_FROM_USER_STRING + " " +
+                AUTHOR_NAME);
+            setActiveMenu(AUTHOR_ID === CURRENT_USER_ID ? "user-navbar" :
+                "play-navbar");
+            break;
+        case "IN_WORK":
+            setTitle(APP_NAME_STRING + " - " + GAMES_IN_WORK_STRING);
+            setActiveMenu("user-navbar");
+            break;
+    }
+
+    setUpPagination(CURRENT_PAGE, TOTAL_PAGES);
+    setUpSortingSelect();
+});
+</script>
+
+<script th:src="@{~/js/lib/luckmoshyJqueryPagnation.js}"></script>
+<script th:src="@{~/js/lib/rating.js}"></script>
+<script th:src="@{~/js/games-list.js}"></script>
+<script th:src="@{~/js/pagination.js}"></script>
+<script th:src="@{~/js/game-operations-api.js}"></script>
+<script th:src="@{~/js/game-operations-dom.js}"></script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <th:block th:switch="${mode}" th:unless="${#lists.isEmpty(games)}">
+        <h4 class="card-title"
+            th:case="${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).FAVORITED_BY_USER}"
+            th:text="#{games.your-favorites}">
+        </h4>
+        <h4 class="card-title"
+            th:case="${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).CREATED_BY_USER}"
+            th:text="#{games.games-from} + ' ' + (${games} != null ? ${games[0].getUser().getUsername()} : 'null')">
+        </h4>
+        <h4 class="card-title"
+            th:case="${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}"
+            th:text="#{games.games-in-work}">
+        </h4>
+    </th:block>
+
+    <label th:if="${#lists.isEmpty(games)}"
+           th:text="#{games.nothing-found}"></label>
+
+    <p class="float-left"
+       th:unless="${#lists.isEmpty(games)} or ${mode} == ${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}">
+        <label for="sortingSelect"><b
+                th:text="#{games.sortBy} + ' '"></b></label>
+        <select class="form-select form-select-sm" id="sortingSelect"
+                size="1" style="width:8em">
+            <option disabled th:text="#{games.sortBy}"></option>
+            <option th:text="#{games.newest}" value="newest"></option>
+            <option selected th:text="#{games.oldest}" value="oldest"></option>
+            <option th:text="#{games.rating}" value="rating"></option>
+        </select></p>
+
+    <main class="px-3">
+        <div class="row row-cols-3 row-cols-md-2 g-4">
+            <div class="col mb-4" th:each="game: ${games}">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title float-right">
+                            <a href="#"
+                               sec:authorize="isAuthenticated()"
+                               th:class="${game.isFavoritedBy(user)} ? 'fas fa-star' : 'far fa-star'"
+                               th:id="'favorite-button-' + ${game.id}"
+                               th:onclick="${game.isFavoritedBy(user)} ? 'javascript:unfavorite(' + ${game.id} + ')' : 'javascript:favorite(' + ${game.id} + ')'"
+                               th:unless="${mode} == ${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}"></a>
+                            <a class="fas fa-edit"
+                               id="game-edit"
+                               sec:authorize="isAuthenticated()"
+                               th:attr="data-game-id=${game.id}"
+                               th:href="@{~/games/{gameId}/edit(gameId = ${game.id})}"
+                               th:if="${game.getUser().getId() == user.id or user.admin == true}"
+                               th:unless="${mode} == ${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}"></a>
+                            <a class="far fa-trash-alt"
+                               href="#"
+                               sec:authorize="isAuthenticated()"
+                               th:attr="onclick=|deleteGame('${game.id}')|"
+                               th:if="${game.getUser().getId() == user.id or user.admin == true}"></a>
+                        </h5>
+                        <h5 class="card-title"><a class="game-name"
+                                                  th:attr="data-game-id=${game.id}"
+                                                  th:href="@{~/games/{gameId}(gameId = ${game.id})}"
+                                                  th:text="${game.name}"></a>
+                            <span class="badge bg-secondary"
+                                  th:text="${game.language}"></span>
+                        </h5>
+                        <p class="card-text"><label class="card-text"
+                                                    th:text="${game.description}"></label>
+                        </p>
+                        <div class="rating"
+                             th:attr="data-game-id=${game.id}, data-rating-stars='5', data-rating-readonly='true', data-rating-value=${game.rating}, data-rating-color='#FFF', data-rating-half='true'"
+                             th:unless="${mode} == ${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}"></div>
+                        <p class="card-text float-right"><a
+                                class="comments-count" id="comments-count"
+                                th:attr="data-game-id=${game.id}"
+                                th:href="@{~/games/{gameId}(gameId = ${game.id})}"
+                                th:text="#{game.comments} + ' (' + ${game.getCommentsCount()} + ')'"
+                                th:unless="${mode} == ${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}"></a><br>
+                            <small class="text-muted float-right"
+                                   th:text="${#dates.format(game.date, 'dd.MM.yyyy')}"
+                                   th:unless="${mode} == ${T(com.artyommameev.quester.controller.page.GamesPage.FilterMode).IN_WORK}"></small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <p>
+    <ul class="pagination justify-content-center" id="luckmoshy"
+        th:if="${not #lists.isEmpty(games)}"></ul>
+    </p>
+
+    <div th:replace="fragments/alert-modal.html::alertModal"></div>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

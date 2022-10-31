@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<div th:each="i : ${#numbers.sequence((comments != null ? comments.size() - 1 : -1), 0, -1)}"
+     th:fragment="comments(comments)" th:id="'comment' + ${comment.id}"
+     th:with="comment=${comments[i]}">
+    <hr style="border-color: rgba(255, 255, 255, .25);"/>
+
+    <h5 class="card-title">
+        <a data-target="#userModal" data-toggle="modal"
+           href="#"
+           th:attr="data-user-name=${comment.user.username}, data-user-id=${comment.user.id}, data-user-enabled=${comment.user.enabled}, data-user-rating=${comment.user.rating}, data-user-games-count=${comment.user.getPublishedGamesCount()}, data-user-rated-count=${comment.user.getRatedGamesCount()}, data-user-comments-count=${comment.user.getCommentsCount()}"
+           th:id="'usernameText' + ${comment.id}"
+           th:text="${comment.user.username}"></a>
+        <small class="text-muted" th:id="'editedText' + ${comment.id}"
+               th:if="${comment.edited}"
+               th:text="'(' + #{game.comments.edited} + ')'"></small>
+        <small class="text-muted"
+               th:text="${#dates.format(comment.date, 'dd-MM-yyyy HH:mm')}"></small>
+        <a th:href="@{~/games/{gameId}(gameId = ${comment.game.id})}"
+           th:if="${game} == null"
+           th:text="'[' + ${comment.game.name} + ']'"></a>
+        <a class="fas fa-edit"
+           data-target="#editCommentModal"
+           data-toggle="modal" href="#"
+           sec:authorize="isAuthenticated()"
+           th:attr="data-comment-id=${comment.id}, data-game-id=${comment.game.id}, data-text=${comment.text}"
+           th:if="${comment.user.id == user.id or user.admin == true}"></a>
+        <a class="far fa-trash-alt"
+           href="#"
+           sec:authorize="isAuthenticated()"
+           th:attr="onclick=|deleteComment('${comment.id}', '${comment.game.id}')|"
+           th:if="${comment.user.id == user.id or user.admin == true}"></a>
+    </h5>
+    <p th:text="${comment.text}"></p>
+</div>
+</html>

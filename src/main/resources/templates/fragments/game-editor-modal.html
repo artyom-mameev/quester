@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<div th:fragment="game-editor-modal">
+    <div class="modal" id="modal_general">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-h5-title"></h5>
+                    <button class="close" data-dismiss="modal"
+                            type="button"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only"></span></button>
+                </div>
+
+                <div class="modal-body">
+                    <label class="col-form-label" for="modal-input-name"
+                           id="modal-label-name"></label>
+                    <input class="form-control" id="modal-input-name"
+                           type="text">
+                    <div><label class="error-text" hidden="true"
+                                id="modal-name-error"></label></div>
+                    <label class="col-form-label modal-element"
+                           for="modal-textarea-description"
+                           id="modal-label-description"></label>
+                    <textarea class="form-control margin-bottom-1"
+                              id="modal-textarea-description"></textarea>
+                    <div><label class="error-text" hidden="true"
+                                id="modal-desc-error"></label></div>
+
+                    <select id="modal-select"></select>
+
+                    <dd class="modal-element" id="modal-dd-checkbox">
+                        <input id="modal-checkbox" name="modal-checkbox[]"
+                               type="checkbox"
+                               value="1">
+                        <label for="modal-checkbox"
+                               id="modal-checkbox-label"></label>
+                    </dd>
+
+                    <input class="modal-radio" id="modal-radio-condition-active"
+                           name="modal-radio-condition"
+                           type="radio" value="modal-radio-condition-active">
+                    <label for="modal-radio-condition-active"
+                           id="modal-radio-label-active"
+                           th:text="#{create.active}"></label>
+                    <input id="modal-radio-condition-not-active"
+                           name="modal-radio-condition"
+                           type="radio"
+                           value="modal-radio-condition-not-active">
+                    <label for="modal-radio-condition-not-active"
+                           id="modal-radio-label-not-active"
+                           th:text="#{create.not-active}"></label>
+                    <div><label class="error-text" hidden="true"
+                                id="modal-condition-error"></label></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" id="modal-button-save"
+                            th:text="#{create.save}" type="button">
+                    </button>
+                    <button class="btn btn-secondary" data-dismiss="modal"
+                            id="modal-button-close" th:text="#{create.close}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

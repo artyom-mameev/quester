@@ -1,0 +1,186 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript">/*<![CDATA[*/
+const GAME_ID = /*[[${game} != null ? ${game.id} : -1]]*/-1;
+const GAME_NAME = /*[[${game} != null ? ${game.name} : 'null']]*/"";
+const USER_REVIEW = /*[[${review}]]*/0;
+
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const GAME_NOT_FOUND_STRING = /*[[#{games.nothing-found}]]*/"";
+const DELETE_COMMENT_STRING = /*[[#{dialog.delete-comment}]]*/"";
+const ARE_YOU_SURE_STRING = /*[[#{dialog.are-you-sure}]]*/"";
+const DELETE_GAME_STRING = /*[[#{game.delete-game}]]*/"";
+const BAN_USER_STRING = /*[[#{dialog.ban-user}]]*/"";
+const UNBAN_USER_STRING = /*[[#{dialog.unban-user}]]*/"";
+const DELETE_ALL_GAMES_STRING = /*[[#{dialog.delete-all-games}]]*/"";
+const DELETE_ALL_COMMENTS_STRING = /*[[#{dialog.delete-all-comments}]]*/"";
+const DELETE_ALL_RATED_STRING = /*[[#{dialog.delete-all-rated}]]*/"";
+const CANNOT_DELETE_THE_COMMENT_STRING = /*[[#{error.cannot-delete-the-comment}]]*/"";
+const CANNOT_DELETE_THE_GAME_STRING = /*[[#{error.cannot-delete-the-game}]]*/"";
+const CANNOT_SEND_THE_REVIEW_STRING = /*[[#{error.cannot-send-the-review}]]*/"";
+const CANNOT_MAKE_A_FAVORITE_STRING = /*[[#{error.cannot-make-a-favorite}]]*/"";
+const CANNOT_UNFAVORITE_STRING = /*[[#{error.cannot-unfavorite}]]*/"";
+const CAN_NOT_BAN_STRING = /*[[#{error.can-not-ban}]]*/"";
+const CAN_NOT_UNBAN_STRING = /*[[#{error.can-not-unban}]]*/"";
+const CAN_NOT_DELETE_ALL_GAMES_STRING = /*[[#{error.can-not-delete-all-games}]]*/"";
+const CAN_NOT_DELETE_ALL_COMMENTS_STRING = /*[[#{error.can-not-delete-all-comments}]]*/"";
+const CAN_NOT_DELETE_ALL_RATED_STRING = /*[[#{error.can-not-delete-all-rated}]]*/"";
+const YES_STRING = /*[[#{dialog.yes}]]*/"";
+const ERROR_STRING = /*[[#{error.error}]]*/"";
+const ERROR_IS_OCCURRED_STRING = /*[[#{error.error-is-occurred}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " +
+        (GAME_NAME !== "" ? GAME_NAME : GAME_NOT_FOUND_STRING));
+    setActiveMenu("play-navbar");
+    setUpCreatingComments();
+    setUpEditingComments();
+    setUpUserModal();
+    setUpRateModal(GAME_ID, USER_REVIEW);
+    shareon();
+});
+</script>
+
+<script th:src="@{~/js/lib/shareon.min.js}"></script>
+<script th:src="@{~/js/lib/rating.js}"></script>
+<script th:src="@{~/js/game-info-setup.js}"></script>
+<script th:src="@{~/js/user-modal.js}"></script>
+<script th:src="@{~/js/comments.js}"></script>
+<script th:src="@{~/js/game-operations-api.js}"></script>
+<script th:src="@{~/js/game-operations-dom.js}"></script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <div class="card">
+            <div class="card-body">
+                <label th:if="${game == null}"
+                       th:text="#{games.nothing-found}"></label>
+                <div th:if="${game}">
+                    <h5 class="card-title"><label
+                            th:text="${game.name}"></label> <span
+                            class="badge bg-secondary"
+                            th:text="${game.language}"></span>
+                        <a href="#" sec:authorize="isAuthenticated()"
+                           th:class="${game.isFavoritedBy(user)} ? 'fas fa-star' : 'far fa-star'"
+                           th:id="'favorite-button-' + ${game.id}"
+                           th:onclick="${game.isFavoritedBy(user)} ? 'javascript:unfavorite(' + ${game.id} + ')' : 'javascript:favorite(' + ${game.id} + ')'"></a>
+                        <a class="fas fa-edit" id="game-edit"
+                           sec:authorize="isAuthenticated()"
+                           th:href="@{~/games/{gameId}/edit(gameId = ${game.id})}"
+                           th:if="${game.getUser().getId() == user.id or user.admin == true}"></a>
+                        <a class="far fa-trash-alt" href="#"
+                           sec:authorize="isAuthenticated()"
+                           th:attr="onclick=|deleteGame('${game.id}')|"
+                           th:if="${game.getUser().getId() == user.id or user.admin == true}"></a>
+                    </h5>
+                    <p class="card-text">
+                        <label class="card-text"
+                               th:text="${game.description}"></label></p>
+                    <div class="rating"
+                         th:attr="data-game-id=${game.id}, data-rating-stars='5', data-rating-readonly='true', data-rating-value=${game.rating}, data-rating-color='#FFF', data-rating-half='true'"></div>
+                    <p class="card-text">
+                        <a data-target="#userModal"
+                           data-toggle="modal"
+                           href="#"
+                           th:attr="data-user-name=${game.getUser().getUsername()}, data-user-id=${game.getUser().getId()}, data-user-enabled=${game.getUser().isEnabled()}, data-user-rating=${game.getUser().getRating()}, data-user-games-count=${game.getUser().getPublishedGamesCount()}, data-user-rated-count=${game.getUser().getRatedGamesCount()}, data-user-comments-count=${game.getUser().getCommentsCount()}"
+                           th:text="${game.getUser().getUsername()}"></a>
+                    </p>
+                    <a class="btn btn-light" id="play-button"
+                       th:href="@{~/games/{gameId}/play(gameId = ${game.id})}"
+                       th:text="#{navbar.play}"></a>
+                    <a class="btn btn-light" data-target="#ratingModal"
+                       data-toggle="modal" href="#"
+                       sec:authorize="isAuthenticated()"
+                       th:text="#{game.rate}"></a>
+                    <p>
+                    <div class="shareon">
+                        <a class="facebook"></a>
+                        <button class="twitter"></button>
+                        <button class="reddit"></button>
+                        <button class="telegram"></button>
+                        <button class="vkontakte"></button>
+                    </div>
+                    </p>
+
+                    <hr/>
+
+                    <h5 class="card-title"><label
+                            th:text="#{game.comments}"></label></h5>
+
+                    <div sec:authorize="!isAuthenticated()">
+                        <label th:text="#{game.to-write-a-comment}"></label> <a
+                            style="text-decoration: underline"
+                            th:href="@{~/login}"
+                            th:text="#{game.login}"></a> <label
+                            th:text="#{game.or}"></label> <a
+                            style="text-decoration: underline"
+                            th:href="@{~/register}"
+                            th:text="#{game.register}"></a><br></div>
+
+                    <div sec:authorize="isAuthenticated()"
+                         th:if="${game}">
+                        <textarea class="form-control"
+                                  name="comment"></textarea>
+                        <div hidden="true" id="comment-error-div">
+                            <label class="error-text"
+                                   id="comment-error"></label></div>
+
+                        <input class="btn btn-light comments-send"
+                               id="send-comment-button"
+                               th:attr="data-game-id=${game.id}"
+                               th:value="#{game.send}" type="submit">
+                    </div>
+
+                    <div th:replace="fragments/comments.html::comments(${game.comments})"></div>
+
+                    <hr th:if="${not #lists.isEmpty(game.comments)}"/>
+
+                    <small class="text-muted float-right"
+                           th:text="${#dates.format(game.date, 'dd.MM.yyyy')}"></small>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:if="${game}"
+         th:replace="fragments/user-modal.html::user-modal(${user})"></div>
+
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel"
+         class="modal fade bd-example-modal-sm" id="ratingModal" role="dialog"
+         tabindex="-1" th:if="${game}">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{game.rate}"></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="review" id="rate"
+                         sec:authorize="isAuthenticated()"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" data-dismiss="modal"
+                            th:text="#{create.close}"
+                            type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/edit-comments-modal.html::edit-comments-modal"></div>
+
+    <div th:replace="fragments/alert-modal.html::alertModal"></div>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

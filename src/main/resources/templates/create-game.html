@@ -1,0 +1,35 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+<script th:inline="javascript"> /*<![CDATA[*/
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const CREATE_A_NEW_GAME_STRING = /*[[#{game-editor.create-new-game}]]*/"";
+const GAME_NAME_STRING = /*[[#{game-editor.game-name}]]*/"";
+const GAME_DESC_STRING = /*[[#{game-editor.game-desc}]]*/"";
+const ENGLISH_STRING = /*[[#{game-editor.english}]]*/"";
+const RUSSIAN_STRING = /*[[#{game-editor.russian}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + CREATE_A_NEW_GAME_STRING);
+    setActiveMenu("create-navbar");
+    showCreateGameModal();
+});
+</script>
+
+<script th:src="@{~/js/game-editor.js}"></script>
+<script th:src="@{~/js/game-editor-dom.js}"></script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <div th:replace="fragments/game-editor-modal.html::game-editor-modal"></div>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

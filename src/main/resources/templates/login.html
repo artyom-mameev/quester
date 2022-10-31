@@ -1,0 +1,85 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript">/*<![CDATA[*/
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const SIGN_UP_STRING = /*[[#{login.sign-up}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + SIGN_UP_STRING);
+    setActiveMenu("user-navbar");
+});
+</script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+
+        <div class="alert alert-danger" role="alert" th:if="${param.error}">
+            [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+        </div>
+
+        <div class="alert alert-danger" th:if="${oauth2Error != null}"
+             th:text="${oauth2Error}">
+        </div>
+
+        <div class="card">
+            <article class="card-body">
+                <a class="float-right btn btn-outline-light"
+                   th:href="@{~/register}" th:text="#{login.sign-up}"></a>
+                <h4 class="card-title mb-4 mt-1" th:text="#{login.login}"></h4>
+                <p>
+                    <a class="btn btn-block btn-outline-info"
+                       href="/oauth2/authorization/google">
+                        <i class="fab fa-google"
+                           th:text="'    ' + #{login.via-google}"></i></a>
+                </p>
+                <hr>
+
+                <form method="post" th:action="@{~/login}">
+                    <div class="form-group">
+                        <input autofocus class="form-control" name="username"
+                               required th:placeholder="#{login.username}"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" name="password" required
+                               th:placeholder="#{login.password}"
+                               type="password">
+                    </div>
+                    <div class="form-group">
+                        <input name="remember-me"
+                               th:text="' ' + #{login.remember-me}"
+                               type="checkbox"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-light btn-block"
+                                        th:text="' ' + #{login.login}"
+                                        type="submit"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a class="small" href="#"
+                               th:text="#{login.forgot}"></a>
+                        </div>
+                    </div>
+                </form>
+            </article>
+        </div>
+    </main>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

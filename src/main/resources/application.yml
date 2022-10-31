@@ -1,0 +1,24 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  datasource:
+    url: 'jdbc:h2:mem:testdb'
+    username: sa
+    data: 'classpath:/sql/triggers.sql'
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-id.apps.googleusercontent.com
+            client-secret: your-secret

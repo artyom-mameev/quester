@@ -1,0 +1,23 @@
+const NODE_TYPE = {
+    ROOM: "ROOM",
+    CHOICE: "CHOICE",
+    FLAG: "FLAG",
+    CONDITION: "CONDITION"
+}
+
+const HTTP_REQUEST_TYPE = {
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE",
+}
+
+const FLAG_STATE = {
+    FLAG_ACTIVE: "ACTIVE",
+    FLAG_NOT_ACTIVE: "NOT_ACTIVE"
+}
+
+
+const ALERT_MODE = {
+    INFO: "INFO",
+    QUESTION: "QUESTION"
+}

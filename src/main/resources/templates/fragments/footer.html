@@ -1,0 +1,15 @@
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<footer class="mt-auto text-white-50" th:fragment="footer">
+    <a th:href="@{?lang=en}" th:text="#{lang.english}"></a>
+    <label> | </label>
+    <a th:href="@{?lang=ru}" th:text="#{lang.russian}"></a>
+    <p>© 2022 <a class="text-white" href="https://github.com/artyom-mameev">
+        Artyom Mameev</a>.<br>
+        Cover template for <a class="text-white"
+                              href="https://getbootstrap.com/">Bootstrap</a>, by
+        <a class="text-white" href="https://twitter.com/mdo">@mdo</a>.</p>
+</footer>
+</html>

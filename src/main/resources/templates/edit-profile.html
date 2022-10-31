@@ -1,0 +1,86 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript"> /*<![CDATA[*/
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const EDIT_PROFILE_STRING = /*[[#{navbar.edit-profile}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + EDIT_PROFILE_STRING);
+    setActiveMenu("user-navbar");
+});
+</script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <div class="card">
+            <article class="card-body">
+                <h4 class="card-title mb-4 mt-1"
+                    th:text="${user.username}"></h4>
+
+                <form id="editUserForm" th:action="@{~/profile}" th:method="put"
+                      th:object="${editProfileDto}">
+                    <div>
+                        <label class="modal-element"
+                               th:text="#{register.email}"></label>
+                        <input class="form-control" id="email" required
+                               th:field="*{email}"
+                               th:placeholder="#{register.email}" type="email"/>
+                        <p class="error-text"
+                           th:each="error : ${#fields.errors('email')}"
+                           th:text="${error}"></p>
+                    </div>
+                    <div>
+                        <label class="modal-element"
+                               th:text="#{edit.new-password}"></label>
+                        <input class="form-control" th:field="*{password}"
+                               th:placeholder="#{edit.new-password}"
+                               type="password"/>
+                        <p class="error-text"
+                           th:each="error : ${#fields.errors('password')}"
+                           th:text="${error}"></p>
+                    </div>
+                    <div>
+                        <label class="modal-element"
+                               th:text="#{edit.new-password-confirm}"></label>
+                        <input class="form-control"
+                               th:field="*{matchingPassword}"
+                               th:placeholder="#{edit.new-password-confirm}"
+                               type="password"/>
+                        <p class="error-text"
+                           th:each="error : ${#fields.errors('matchingPassword')}"
+                           th:text="${error}"></p>
+                    </div>
+                    <div>
+                        <label class="modal-element"
+                               th:text="#{edit.current-password}"></label>
+                        <input class="form-control" required
+                               th:field="*{currentPassword}"
+                               th:placeholder="#{edit.current-password}"
+                               type="password"/>
+                        <p class="error-text"
+                           th:each="error : ${#fields.errors('currentPassword')}"
+                           th:text="${error}"></p>
+                    </div>
+                    <button class="btn btn-light btn-block register-button"
+                            th:text="#{create.save}"
+                            type="submit"></button>
+                </form>
+            </article>
+        </div>
+    </main>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<div aria-hidden="true" aria-labelledby="exampleModalLabel"
+     class="modal fade bd-example-modal-sm" id="userModal"
+     role="dialog"
+     tabindex="-1" th:fragment="user-modal(currentUser)">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="user-modal-title"></h5> <a
+                    href="#"
+                    id="banButton"
+                    sec:authorize="isAuthenticated()"
+                    th:if="${currentUser.admin}"></a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group no-bottom-margin">
+                    <h5 id="banned"
+                        th:text="'(' + #{user.banned} + ')'"></h5>
+                    <b th:text="#{games.rating}"></b><b>:</b> <label
+                        id="rating-label"></label><br>
+                    <b th:text="#{game.user.added}"></b><b>:</b> <label
+                        id="games-count-label"></label> <a
+                        id="show-all-games-link"
+                        th:text="'(' + #{game.user.showAll} + ')'"></a>
+                    <a
+                            class="fas fa-trash-alt"
+                            href="#"
+                            id="delete-all-games-button"
+                            sec:authorize="isAuthenticated()"
+                            th:if="${currentUser.admin}"></a><br>
+                    <b th:text="#{game.user.rated}"></b><b>:</b> <label
+                        id="rated-count-label"></label> <a
+                        class="fas fa-trash-alt"
+                        href="#"
+                        id="delete-all-reviews-button"
+                        sec:authorize="isAuthenticated()"
+                        th:if="${currentUser.admin}"></a><br>
+                    <b th:text="#{game.comments}"></b><b>:</b> <label
+                        class="no-bottom-margin"
+                        id="comments-count-label"></label> <a
+                        id="show-all-comments-link"
+                        th:text="'(' + #{game.user.showAll} + ')'"></a>
+                    <a
+                            class="fas fa-trash-alt"
+                            href="#"
+                            id="delete-all-comments-button"
+                            sec:authorize="isAuthenticated()"
+                            th:if="${currentUser.admin}"></a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-dismiss="modal"
+                        th:text="#{create.close}" type="button"></button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

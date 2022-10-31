@@ -1,0 +1,61 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript"> /*<![CDATA[*/
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const CONFIRM_USERNAME_STRING = /*[[#{confirm-username.confirm}]]*/"";/*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + CONFIRM_USERNAME_STRING);
+    setActiveMenu("user-navbar");
+});
+</script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <div class="card">
+            <article class="card-body">
+                <h4 class="card-title mb-4 mt-1"
+                    th:text="#{confirm-username.confirm}"></h4>
+
+                <form method="post" th:action="@{~/confirm-username}"
+                      th:object="${confirmUsernameDto}">
+                    <div class="form-group">
+                        <label for="usernameInput"
+                               th:text="#{login.username}"></label>
+                        <input autofocus class="form-control"
+                               id="usernameInput" required
+                               th:field="*{username}"
+                               th:placeholder="#{login.username}" type="text"/>
+                        <p class="error-text"
+                           th:each="error : ${#fields.errors('username')}"
+                           th:text="${error}"></p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-light btn-block"
+                                        th:text="#{create.save}"
+                                        type="submit"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </article>
+        </div>
+    </main>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

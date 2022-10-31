@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<head th:fragment="head2">
+    <th:block layout:fragment="head">
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta content="" name="description">
+        <meta content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+              name="author">
+        <meta content="Hugo 0.79.0" name="generator">
+        <title>Quester</title>
+
+        <link href="https://getbootstrap.com/docs/5.0/examples/cover/"
+              rel="canonical">
+
+        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+              type="text/css"/>
+
+        <link rel="stylesheet" th:href="@{/css/cover.css}">
+
+        <link rel="stylesheet" th:href="@{/themes/default/style.css}">
+
+        <link rel="stylesheet" th:href="@{/css/shareon.min.css}">
+
+        <link href="/webjars/font-awesome/css/all.css" rel="stylesheet">
+
+        <script src="/webjars/jquery/jquery.min.js"></script>
+
+        <script src="/webjars/popper.js/umd/popper.min.js"></script>
+
+        <script src="/webjars/js-cookie/js.cookie.js"></script>
+
+        <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+        <!--suppress JSUnresolvedLibraryURL -->
+        <script src="http://localhost:35729/livereload.js"></script>
+
+        <script th:src="@{~/js/constants.js}"></script>
+        <script th:src="@{~/js/commons.js}"></script>
+        <script th:src="@{~/js/page-setup.js}"></script>
+        <script th:src="@{~/js/ajax-setup.js}"></script>
+
+        <style>
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+            }
+
+            @media (min-width: 768px) {
+                .bd-placeholder-img-lg {
+                    font-size: 3.5rem;
+                }
+            }
+        </style>
+    </th:block>
+</head>
+</html>

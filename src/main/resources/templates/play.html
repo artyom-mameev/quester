@@ -1,0 +1,51 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript"> /*<![CDATA[*/
+const GAME_NAME = /*[[${game.name}]]*/ '';
+
+const ROOT_GAME_NODE = /*[[${game.getRootNode()}]]*/ '';
+
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const PLAY_STRING = /*[[#{play}]]*/"";
+const START_AGAIN_STRING = /*[[#{play.start-again}]]*/"";
+const RETURN_TO_GAME_PAGE_STRING = /*[[#{play.return-to-game-page}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + GAME_NAME + " - " + PLAY_STRING);
+    goToNextRoom(ROOT_GAME_NODE);
+});
+</script>
+
+<script th:src="@{~/js/game-player.js}"></script>
+<script th:src="@{~/js/game-player-choices.js}"></script>
+<script th:src="@{~/js/game-player-rooms.js}"></script>
+<script th:src="@{~/js/game-player-dom.js}"></script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <div class="card">
+            <div class="card-body">
+                <div id="game" th:attr="data-game-id=${game.id}">
+                    <h5 id="room-name"></h5>
+                    <p><label id="room-description"></label></p>
+                    <div id="choices">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

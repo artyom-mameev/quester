@@ -1,0 +1,99 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript"> /*<![CDATA[*/
+const ROOM_ICON = /*[[${roomIconUrl}]]*/'';
+const CHOICE_ICON = /*[[${choiceIconUrl}]]*/'';
+const FLAG_ICON = /*[[${flagIconUrl}]]*/'';
+const CONDITION_ICON = /*[[${conditionIconUrl}]]*/'';
+
+const GAME_ID = /*[[${game} != null ? ${game.id} : 'null']]*/ '-1';
+const GAME_NAME = /*[[${game} != null ? ${game.name} : 'null']]*/ '';
+const GAME_DESCRIPTION = /*[[${game} != null ? ${game.description} : 'null']]*/ '';
+const GAME_LANGUAGE = /*[[${game} != null ? ${game.language} : 'null']]*/ '';
+const ROOT_GAME_NODE = /*[[${game} != null ? ${game.rootNode} : 'null']]*/ {};
+
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const PUBLISH_STRING = /*[[#{game.publish}]]*/"";
+const EDIT_GAME_STRING = /*[[#{game.edit-game}]]*/"";
+const FLAG_STRING = /*[[#{game-editor.flag}]]*/"";
+const ADD_ROOM_STRING = /*[[#{game-editor.add-room}]]*/"";
+const ADD_CHOICE_STRING = /*[[#{game-editor.add-choice}]]*/"";
+const ADD_CONDITION_STRING = /*[[#{game-editor.add-condition}]]*/"";
+const EDIT_ITEM_STRING = /*[[#{game-editor.edit-item}]]*/"";
+const DELETE_ITEM_STRING = /*[[#{game-editor.delete-item}]]*/"";
+const FLAG_DELETE_ALERT_STRING = /*[[#{game-editor.flag-delete-alert}]]*/"";
+const IF_STRING = /*[[#{game-editor.if}]]*/"";
+const IS_ACTIVE_STRING = /*[[#{game-editor.is-active}]]*/"";
+const IS_NOT_ACTIVE_STRING = /*[[#{game-editor.is-not-active}]]*/"";
+const ROOM_NAME_STRING = /*[[#{game-editor.room-name}]]*/"";
+const ROOM_DESC_STRING = /*[[#{game-editor.room-desc}]]*/"";
+const CHOICE_NAME_STRING = /*[[#{game-editor.choice-name}]]*/"";
+const EDIT_ROOM_STRING = /*[[#{game-editor.edit-room}]]*/"";
+const EDIT_CHOICE_STRING = /*[[#{game-editor.edit-choice}]]*/"";
+const EDIT_CONDITION_STRING = /*[[#{game-editor.edit-condition}]]*/"";
+const CAN_NOT_DELETE_ITEM_STRING = /*[[#{game-editor.can-not-delete-item}]]*/"";
+const CREATE_A_NEW_GAME_STRING = /*[[#{game-editor.create-new-game}]]*/"";
+const GAME_NAME_STRING = /*[[#{game-editor.game-name}]]*/"";
+const GAME_DESC_STRING = /*[[#{game-editor.game-desc}]]*/"";
+const ENGLISH_STRING = /*[[#{game-editor.english}]]*/"";
+const RUSSIAN_STRING = /*[[#{game-editor.russian}]]*/"";
+const UPDATE_GAME_INFO_STRING = /*[[#{game-editor.update-game-info}]]*/"";
+const YES_STRING = /*[[#{dialog.yes}]]*/"";
+const ARE_YOU_SURE_STRING = /*[[#{dialog.are-you-sure}]]*/"";
+const ERROR_STRING = /*[[#{error.error}]]*/"";
+const ERROR_IS_OCCURRED_STRING = /*[[#{error.error-is-occurred}]]*/""; /*]]>*/
+
+$(document).ready(function () {
+    setTitle(APP_NAME_STRING + " - " + EDIT_GAME_STRING + " - " + GAME_NAME);
+    setActiveMenu("create-navbar");
+    initGameEditor({
+        id: GAME_ID,
+        name: GAME_NAME,
+        description: GAME_DESCRIPTION,
+        language: GAME_LANGUAGE,
+        rootNode: ROOT_GAME_NODE
+    }, {
+        roomIcon: ROOM_ICON,
+        choiceIcon: CHOICE_ICON,
+        flagIcon: FLAG_ICON,
+        conditionIcon: CONDITION_ICON
+    });
+});
+</script>
+
+<script src="/webjars/jstree/jstree.min.js"></script>
+<script th:src="@{~/js/game-editor.js}"></script>
+<script th:src="@{~/js/game-editor-dom.js}"></script>
+<script th:src="@{~/js/game-editor-nodes.js}"></script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <div id="jstree"></div>
+        <div class="text-right" style="margin-top: 1rem">
+            <a class="btn btn-light" id="play-button"
+               th:href="@{~/games/{gameId}/play(gameId = ${game.id})}"
+               th:text="#{create.play}"
+               type="button"></a>
+            <button class="btn btn-light" id="edit-game-info-button"
+                    th:attr="onclick=|showUpdateGameInfoModal('${game.id}', '${game.name}', '${game.description}', '${game.language}')|"
+                    th:text="${game.isPublished()} ? #{create.edit-game-info} : #{game.save-or-publish}"
+                    type="button"></button>
+        </div>
+    </main>
+
+    <div th:replace="fragments/alert-modal.html::alertModal"></div>
+    <div th:replace="fragments/game-editor-modal.html::game-editor-modal"></div>
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

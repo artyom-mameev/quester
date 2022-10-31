@@ -1,0 +1,29 @@
+package com.artyommameev.quester.validation.annotation;
+
+import com.artyommameev.quester.validation.validator.GameNodeValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+/**
+ * An annotation used with {@link GameNodeValidator}.
+ *
+ * @author Artyom Mameev
+ */
+@Target({TYPE, FIELD, ANNOTATION_TYPE})
+@Retention(RUNTIME)
+@Constraint(validatedBy = GameNodeValidator.class)
+@Documented
+public @interface ValidGameNode {
+    String message() default "Game Node format is incorrect";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}

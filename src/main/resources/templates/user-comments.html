@@ -1,0 +1,91 @@
+<!doctype html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head.html::head"></head>
+
+<script th:inline="javascript"> /*<![CDATA[*/
+const AUTHOR_NAME = /*[[${comments != null and !comments.empty} ? ${comments[0].user.username} : null]]*/'';
+
+const TOTAL_PAGES = /*[[${totalPages}]]*/ '';
+const CURRENT_PAGE = /*[[${currentPage}]]*/ '';
+
+const APP_NAME_STRING = /*[[#{app.name}]]*/"";
+const COMMENTS_STRING = /*[[#{game.comments}]]*/"";
+const COMMENTS_NOT_FOUND_STRING = /*[[#{games.nothing-found}]]*/"";
+const YES_STRING = /*[[#{dialog.yes}]]*/"";
+const ERROR_STRING = /*[[#{error.error}]]*/"";
+const ERROR_IS_OCCURRED_STRING = /*[[#{error.error-is-occurred}]]*/"";
+const DELETE_COMMENT_STRING = /*[[#{dialog.delete-comment}]]*/"";
+const BAN_USER_STRING = /*[[#{dialog.ban-user}]]*/"";
+const UNBAN_USER_STRING = /*[[#{dialog.unban-user}]]*/"";
+const DELETE_ALL_GAMES_STRING = /*[[#{dialog.delete-all-games}]]*/"";
+const DELETE_ALL_COMMENTS_STRING = /*[[#{dialog.delete-all-comments}]]*/"";
+const DELETE_ALL_RATED_STRING = /*[[#{dialog.delete-all-rated}]]*/"";
+const CAN_NOT_BAN_STRING = /*[[#{error.can-not-ban}]]*/"";
+const CAN_NOT_UNBAN_STRING = /*[[#{error.can-not-unban}]]*/"";
+const CAN_NOT_DELETE_ALL_GAMES_STRING = /*[[#{error.can-not-delete-all-games}]]*/"";
+const CAN_NOT_DELETE_ALL_COMMENTS_STRING = /*[[#{error.can-not-delete-all-comments}]]*/"";
+const CAN_NOT_DELETE_ALL_RATED_STRING = /*[[#{error.can-not-delete-all-rated}]]*/"";
+const ARE_YOU_SURE_STRING = /*[[#{dialog.are-you-sure}]]*/"";
+const CANNOT_DELETE_THE_COMMENT_STRING =
+    /*[[#{error.cannot-delete-the-comment}]]*/"";/*]]>*/
+
+$(document).ready(function () {
+    if (AUTHOR_NAME !== null) {
+        setTitle(APP_NAME_STRING + " - " + AUTHOR_NAME + " - " + COMMENTS_STRING);
+    } else {
+        setTitle(APP_NAME_STRING + " - " + COMMENTS_NOT_FOUND_STRING);
+    }
+    setActiveMenu("play-navbar");
+    setUpEditingComments();
+    setUpPagination(CURRENT_PAGE, TOTAL_PAGES);
+    setUpUserModal();
+});
+</script>
+
+<script th:src="@{~/js/lib/luckmoshyJqueryPagnation.js}"></script>
+<script th:src="@{~/js/pagination.js}"></script>
+<script th:src="@{~/js/user-modal.js}"></script>
+<script th:src="@{~/js/comments.js}"></script>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div th:replace="fragments/navbar.html::navbar"></div>
+
+    <main class="px-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><label
+                        th:text="#{game.comments.comments-from-user} + ' ' + (${comments} != null ? ${comments[0].user.username} : 'null')"
+                        th:unless="${#lists.isEmpty(comments)}"></label>
+                </h5>
+
+                <label th:if="${#lists.isEmpty(comments)}"
+                       th:text="#{games.nothing-found}"></label>
+
+                <div th:replace="fragments/comments.html::comments(${comments})"></div>
+
+            </div>
+        </div>
+
+    </main>
+    <p>
+    <ul class="pagination justify-content-center" id="luckmoshy"
+        th:unless="${#lists.isEmpty(comments)}">
+    </ul>
+    </p>
+    <div th:unless="${#lists.isEmpty(comments)}">
+        <div th:replace="fragments/user-modal.html::user-modal(${user})"></div>
+    </div>
+
+    <div th:replace="fragments/edit-comments-modal.html::edit-comments-modal"></div>
+
+    <div th:replace="fragments/alert-modal.html::alertModal"></div>
+
+    <footer th:replace="fragments/footer.html::footer"></footer>
+</div>
+</body>
+</html>

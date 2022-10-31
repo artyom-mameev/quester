@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<header class="mb-auto" th:fragment="navbar">
+    <div>
+        <h3 class="float-md-start mb-0">Quester</h3>
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+            <a class="nav-link" id="play-navbar" th:href="@{~/games}"
+               th:text="#{navbar.play}"></a>
+            <a class="nav-link" id="create-navbar" th:href="@{~/games/create}"
+               th:text="#{navbar.create}"></a>
+            <label class="nav-delimiter" id="delimiter">|</label>
+            <div class="dropdown">
+                <a aria-expanded="false" aria-haspopup="true" id="user-navbar"
+                   th:class="${user} == null ? 'nav-link btn-group' : 'nav-link btn-group profile-link'"
+                   th:data-toggle="${user} == null ? '' : 'dropdown'"
+                   th:href="${user} == null ? @{~/login} : @{#}"
+                   th:text="${user} == null ? #{navbar.sign-in} : ${user.username}"
+                   type="button"></a>
+                <div aria-labelledby="user-navbar" class="dropdown-menu">
+                    <a class="dropdown-item" id="favoritesDropdown"
+                       th:href="@{~/favorites}"
+                       th:text="#{navbar.favorites}"></a>
+                    <a class="dropdown-item" id="yourGamesDropdown"
+                       th:href="${user} == null ? @{#} : @{~/games?user={userId}(userId = ${user.id})}"
+                       th:text="#{navbar.your-games}"></a>
+                    <a class="dropdown-item" id="gamesInWorkDropdown"
+                       th:href="@{~/in-work}"
+                       th:text="#{navbar.games-in-work}"></a>
+                    <a class="dropdown-item" id="editProfileDropdown"
+                       th:href="${user} == null ? @{#} : @{~/profile}"
+                       th:if="${user} != null and ${user.googleEmail} == null"
+                       th:text="#{navbar.edit-profile}"></a>
+                </div>
+            </div>
+            <a class="nav-link" href="#" id="logout-navbar" onclick="logout()"
+               th:if="${user} != null" th:text="#{navbar.sign-out}"></a>
+        </nav>
+    </div>
+</header>
+</html>

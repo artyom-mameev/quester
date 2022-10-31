@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
+     id="editCommentModal" role="dialog" tabindex="-1"
+     th:fragment="edit-comments-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{game.comments.edit}"></h5>
+                <button aria-label="Close" class="close" data-dismiss="modal"
+                        type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group no-bottom-margin">
+                    <textarea class="form-control" id="comment-text"></textarea>
+                </div>
+                <div hidden="true" id="comment-error-div-modal">
+                    <label class="error-text" id="comment-error-modal"></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" id="modal-button-save"
+                        th:text="#{create.save}" type="button">
+                </button>
+                <button class="btn btn-secondary" data-dismiss="modal"
+                        th:text="#{create.close}" type="button">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
