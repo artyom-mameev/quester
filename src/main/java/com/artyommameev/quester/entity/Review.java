@@ -28,10 +28,12 @@ public final class Review {
     @Range(min = 1, max = 5)
     @Getter
     private int rating;
+
     @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Getter
     private Game game;
+
     @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Getter

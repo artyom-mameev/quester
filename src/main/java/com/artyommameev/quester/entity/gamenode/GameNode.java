@@ -32,27 +32,32 @@ import static com.artyommameev.quester.QuesterApplication.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class GameNode {
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @OrderColumn(nullable = false)
-    private final List<GameNode> children = new ArrayList<>();
     @Column(nullable = false, updatable = false)
     @Getter
     @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
     private String id;
+
     @Getter
     @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
     private String name;
+
     @Getter
     @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
     private String description;
+
     @Column(nullable = false, updatable = false)
     @Getter
     @Setter(AccessLevel.PROTECTED)
     @Enumerated(EnumType.STRING)
     private NodeType type;
+
     @Getter
     @Setter(AccessLevel.PROTECTED)
     private Condition condition;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @OrderColumn(nullable = false)
+    private final List<GameNode> children = new ArrayList<>();
 
     /**
      * Instantiates a new Game Node.

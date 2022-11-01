@@ -23,29 +23,34 @@ import static com.artyommameev.quester.QuesterApplication.MIN_STRING_SIZE;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     private long id;
+
+    @Column(nullable = false)
+    @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
+    @Getter
+    private String text;
+
+    @Column(nullable = false)
+    @Getter
+    private Date date;
+
+    @Getter
+    private boolean edited;
 
     @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JsonBackReference
     @Getter
     private Game game;
+
     @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Getter
     private User user;
-    @Column(nullable = false)
-    @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
-    @Getter
-    private String text;
-    @Column(nullable = false)
-    @Getter
-    private Date date;
-    @Getter
-    private boolean edited;
 
     /**
      * Instantiates a new Comment with the current date.
