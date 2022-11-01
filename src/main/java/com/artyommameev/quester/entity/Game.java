@@ -35,7 +35,6 @@ public final class Game {
     //don't initialize the whole collection if just size() or contains() is called
     @LazyCollection(LazyCollectionOption.EXTRA)
     @OnDelete(action = CASCADE)
-    @OrderColumn(nullable = false)
     private final List<Comment> comments = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",
             fetch = FetchType.LAZY)
