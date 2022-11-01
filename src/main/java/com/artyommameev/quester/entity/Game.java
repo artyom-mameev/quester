@@ -38,6 +38,8 @@ public final class Game {
     private final List<Comment> comments = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game",
             fetch = FetchType.LAZY)
+    //don't initialize the whole collection if just size() or contains() is called
+    @LazyCollection(LazyCollectionOption.EXTRA)
     @OnDelete(action = CASCADE)
     private final Set<Review> reviews = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY)
