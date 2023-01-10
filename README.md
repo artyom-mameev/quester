@@ -4,7 +4,7 @@
 
 **Quester** is a Fullstack application written in Java/Spring Boot 
 (Backend-part) and HTML/CSS/JavaScript (Frontend-part), a web service that allows
-to create, view, share and play text games. The service has an elaborate
+to create, view, share and play text games. The service has elaborate
 functionality aimed at client-friendliness and social interaction between users.
 Particular attention was paid to security and data integrity, flexible
 architecture, simple and clean code, as well as the ease of support. The project
@@ -93,7 +93,7 @@ H2 in-memory database is used as a database.
 ## Features
 
 - A simple user interface using cards and modal windows, which alerts the user
-  about errors, warns about the possible irreversibility of operations and
+  about errors, warns about the possible irreversibility of operations, and
   informs about the successful completion of actions, the result of which is not
   obvious;
 - Users can use the basic functionality of the service without registration;
@@ -236,7 +236,7 @@ H2 in-memory database is used as a database.
 ![Gameplay process](readme/screenshots/3-game-format-1.png)
 
 During the game, a room is shown to the player, depending on which the player is
-asked to make a particular choice that lead to another room. The game rooms may
+asked to make a particular choice that leads to another room. The game rooms may
 also contain actions, depending on which new choices may appear and routes to
 new rooms become available. The goal of the player is to reach the room which is
 presented by the author of the game as the final room, and to avoid the rooms
@@ -245,8 +245,8 @@ can start the game all over again and achieve a different result.
 
 ![Test game constructor](readme/screenshots/3-game-format-2.png)
 
-Architecturally, games are built from a special game elements, which form a
-tree-like structure. Each node of the structure is a separate game element,
+Architecturally, games are built from special game elements, which form a
+tree-like structure. Each node in the structure is a separate game element,
 which can contain other game elements.
 
 ### Room
@@ -265,7 +265,7 @@ Has a name. Can contain a *room* to which the choice leads, or the *conditions*.
 
 ![Flag](readme/icons/icons8-empty-flag-48.png)
 
-Has a name. An action that can trigger one or several *conditions*. Cannot
+Has a name. An action that can trigger one or more *conditions*. Cannot
 contain any other game elements.
 
 ### Condition
@@ -282,7 +282,7 @@ or other *conditions* (a chain of *conditions* can be implemented in that way).
 - A *choice* can contain only one *room*;
 - If a *choice* contains a *room* and one or more *conditions* leading to
   other *rooms*, if no *conditions* are triggered, the *choice* leads directly
-  to the *room* contained in the *choice*, otherwise the *choice* leads to the 
+  to the *room* contained in the *choice*; otherwise the *choice* leads to the 
   *room* contained in the *condition* that was triggered. In this way, it is
   possible to create multiple *conditions* for getting into specific *rooms*,
   and a default *room* that the player will get into if none of the *conditions*
@@ -292,7 +292,7 @@ or other *conditions* (a chain of *conditions* can be implemented in that way).
   and thus triggered the "If Take a Stick is active" *condition*, that *choice*
   will lead to the *room* contained in the "If Take a Stick is active" 
   *condition* - that is, the "Swamp Shack" *room*. If the "Take a Stick" *flag*
-  has not been activated by the player, and therefore the "If Take a Stick is
+  has not been activated by the player, and therefore, the "If Take a Stick is
   active" *condition* has not been triggered, the *choice* will lead to the 
   "Drowned in The Swamps" *room*;
 - If a *choice* contains more than one triggered *conditions*, the first 
@@ -366,7 +366,7 @@ Password: `testpassword`
     data: 'classpath:/sql/triggers.sql'
 ```
 
-#### To enable oAuth2 authorization with Google, you need to [create a new project in Google Developers  Console](https://www.balbooa.com/gridbox-documentation/how-to-get-google-client-id-and-client-secret) and add your `cliend ID` and `client secret` to the application.yml file.
+#### To enable oAuth2 authorization with Google, you need to [create a new project in Google Developers  Console](https://www.balbooa.com/gridbox-documentation/how-to-get-google-client-id-and-client-secret) and add your `client ID` and `client secret` to the application.yml file.
 
 ```yaml
   security:
@@ -404,15 +404,15 @@ the [MIT License](https://opensource.org/licenses/MIT).
 
 `EmailChecker` code was taken
 from [Spring Boot in Action Sample Code](https://github.com/habuma/spring-boot-in-action-samples)
-which licensed under
+which is licensed under
 the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
 
 Cover template for Bootstrap by [mdo](https://twitter.com/mdo).
 
-[Room](https://icons8.com/icon/110119/комната)
-, [Question Mark](https://icons8.com/icon/85935/вопросительный-знак)
-, [Flag](https://icons8.com/icon/11710/флаг)
-and [Condition](https://icons8.com/icon/XZ90flS6EmrA/if) icons
+[Room](https://icons8.com/icon/110119/комната),
+[Question Mark](https://icons8.com/icon/85935/вопросительный-знак),
+[Flag](https://icons8.com/icon/11710/флаг) and
+[Condition](https://icons8.com/icon/XZ90flS6EmrA/if) icons
 by [Icons8](https://icons8.com).
 
 <a name="contribution"/>
