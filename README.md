@@ -56,9 +56,8 @@ The backend is written in Java, the main backend technology stack:
 - [WebJars](https://www.webjars.org) for adding JavaScript dependencies directly
   to the project;
 - [JUnit](https://junit.org/junit5/) for writing unit/integration tests;
-- [Mockito](https://site.mockito.org)
-  /[Powermock](https://github.com/powermock/powermock) for creating mock objects
-  in unit/integration tests;
+- [Mockito](https://site.mockito.org)/[Powermock](https://github.com/powermock/powermock)
+  for creating mock objects in unit/integration tests;
 - [EqualsVerifier](https://jqno.nl/equalsverifier/) to test the `equals()`
   and `hashCode()` methods.
 
