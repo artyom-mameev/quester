@@ -4,7 +4,7 @@ import com.artyommameev.quester.entity.Game;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 
 /**
  * A {@link GameNode} domain entity. Encapsulates a {@link Game} room that can
@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
  * @author Artyom Mameev
  * @see GameNode
  */
-@Embeddable
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomNode extends GameNode {
 

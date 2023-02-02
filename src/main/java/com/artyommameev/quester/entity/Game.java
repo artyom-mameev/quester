@@ -50,6 +50,7 @@ public final class Game {
     @Getter
     private String language;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Getter
     private RoomNode rootNode;
 

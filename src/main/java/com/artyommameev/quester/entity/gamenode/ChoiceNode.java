@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 
 /**
  * A {@link GameNode} domain entity. Encapsulates a {@link Game} choice that
@@ -18,7 +18,7 @@ import javax.persistence.Embeddable;
  * @author Artyom Mameev
  * @see GameNode
  */
-@Embeddable
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChoiceNode extends GameNode {
 

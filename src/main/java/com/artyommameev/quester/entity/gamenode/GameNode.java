@@ -3,6 +3,7 @@ package com.artyommameev.quester.entity.gamenode;
 import com.artyommameev.quester.entity.Game;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.artyommameev.quester.QuesterApplication.*;
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 /**
  * A game node domain entity. Encapsulates a tree-like structure consisting of
@@ -24,13 +26,19 @@ import static com.artyommameev.quester.QuesterApplication.*;
  * @see FlagNode
  * @see ConditionNode
  */
-@Embeddable
+
+@Entity
 // more appropriate for the 'composite' pattern
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // for lazy loading when serializing to json
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateL@MappedSuperclass\nazyInitializer", "handler"})
 public abstract class GameNode {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
+    private long dbId;
 
     @Column(nullable = false, updatable = false)
     @Getter
@@ -55,8 +63,9 @@ public abstract class GameNode {
     @Setter(AccessLevel.PROTECTED)
     private Condition condition;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @OrderColumn(nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OnDelete(action = CASCADE)
+    @JoinColumn
     private final List<GameNode> children = new ArrayList<>();
 
     /**
@@ -583,15 +592,13 @@ public abstract class GameNode {
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public final static class Condition {
-        @Column(nullable = false)
         @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
         @Getter
         private String flagId;
-        @Column(nullable = false)
         @Getter
         @Enumerated(EnumType.STRING)
         private FlagState flagState;
-        @Column(nullable = false, updatable = false)
+        @Column(updatable = false)
         @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
         @Getter
         private String nodeId;
@@ -665,7 +672,7 @@ public abstract class GameNode {
          * @throws EmptyStringException if the new {@link FlagNode} id is empty.
          * @throws NullValueException   if the new {@link FlagNode} id is null.
          */
-        protected void setFlagId(String flagId) throws EmptyStringException,
+        void setFlagId(String flagId) throws EmptyStringException,
                 NullValueException {
             if (flagId == null) {
                 throw new NullValueException("Flag id cannot be null");
@@ -686,7 +693,7 @@ public abstract class GameNode {
          *                  triggered.
          * @throws NullValueException if the {@link FlagNode} state is null.
          */
-        protected void setFlagState(FlagState flagState)
+        void setFlagState(FlagState flagState)
                 throws NullValueException {
             if (flagState == null) {
                 throw new NullValueException("Flag state cannot be null");
@@ -706,7 +713,7 @@ public abstract class GameNode {
          * @throws NullValueException   if the new {@link ConditionNode} id is
          *                              null.
          */
-        protected void setNodeId(String nodeId) throws EmptyStringException,
+        private void setNodeId(String nodeId) throws EmptyStringException,
                 NullValueException {
             if (nodeId == null) {
                 throw new NullValueException("Node id cannot be null");
