@@ -32,7 +32,7 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // for lazy loading when serializing to json
-@JsonIgnoreProperties({"hibernateL@MappedSuperclass\nazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class GameNode {
 
     @Id
