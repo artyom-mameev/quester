@@ -94,7 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/", "/error/**", "/webjars/**",
                                 "/css/**", "/js/**", "/themes/**", "/login",
                                 "/register", "/games", "/games/{gameId:\\d+}",
-                                "/games/{gameId:\\d+}/play", "/comments")
+                                "/games/{gameId:\\d+}/play", "/comments",
+                                "/h2-console/**")
                         .permitAll()
 
                         .antMatchers(HttpMethod.GET,
@@ -134,8 +135,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .csrf(c -> c
                         .csrfTokenRepository(CookieCsrfTokenRepository
-                                .withHttpOnlyFalse()))
+                                .withHttpOnlyFalse())
+                        .ignoringAntMatchers("/h2-console/**")
+                )
 
+                .headers().frameOptions().sameOrigin() //for h2 console
+
+                .and()
                 .oauth2Login(o -> o
                         .failureHandler((request, response, exception) -> {
                             request.getSession()
