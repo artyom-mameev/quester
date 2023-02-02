@@ -40,7 +40,7 @@ public class GameNodeValidator
                 MIN_STRING_SIZE + " " +
                 messageSource.getMessage("valid.and-more-than",
                         null, LocaleContextHolder.getLocale()) + " " +
-                MAX_SHORT_STRING_SIZE + " " +
+                MAX_LONG_STRING_SIZE + " " +
                 messageSource.getMessage("valid.characters",
                         null, LocaleContextHolder.getLocale());
     }
@@ -55,13 +55,13 @@ public class GameNodeValidator
      * field is null or the field's length does not match the minimum and
      * maximum values specified in the
      * {@link QuesterApplication#MIN_STRING_SIZE} and
-     * {@link QuesterApplication#MAX_SHORT_STRING_SIZE} constants, adds
+     * {@link QuesterApplication#MAX_LONG_STRING_SIZE} constants, adds
      * constraint violation to the field 'name'.
      * <p>
      * If the 'type' field is 'ROOM' and 'description' field is null
      * or the field's length does not match the minimum and maximum values
      * specified in the {@link QuesterApplication#MIN_STRING_SIZE} and
-     * {@link QuesterApplication#MAX_SHORT_STRING_SIZE} constants, adds
+     * {@link QuesterApplication#MAX_LONG_STRING_SIZE} constants, adds
      * constraint violation to the field 'description'.
      * <p>
      * If the 'type' field is 'CONDITION', and the node's 'condition'
@@ -143,7 +143,7 @@ public class GameNodeValidator
                                        ConstraintValidatorContext
                                                context) {
         if (gameNodeDto.getName().length() < MIN_STRING_SIZE ||
-                gameNodeDto.getName().length() > MAX_SHORT_STRING_SIZE) {
+                gameNodeDto.getName().length() > MAX_LONG_STRING_SIZE) {
             context.buildConstraintViolationWithTemplate(sizeError)
                     .addPropertyNode("name")
                     .addConstraintViolation();

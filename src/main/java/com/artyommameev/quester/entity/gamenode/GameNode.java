@@ -46,7 +46,7 @@ public abstract class GameNode {
     private String id;
 
     @Getter
-    @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
+    @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
     private String name;
 
     @Getter
