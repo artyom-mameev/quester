@@ -382,7 +382,7 @@ public class GameRepositoryTests {
                     true);
 
             ReflectionTestUtils.setField(createdGame, "rating",
-                    new Random().nextInt(5));
+                    (double) new Random().nextInt(5));
 
             gamesList.add(createdGame);
         }
@@ -513,7 +513,7 @@ public class GameRepositoryTests {
                     "TestDesc" + i, "TestLang" + i, user,
                     true);
             ReflectionTestUtils.setField(createdGame, "rating",
-                    new Random().nextInt(5));
+                    (double) new Random().nextInt(5));
             gamesList.add(createdGame);
         }
 
@@ -649,7 +649,7 @@ public class GameRepositoryTests {
             createdGame.addFavoritedUser(user);
 
             ReflectionTestUtils.setField(createdGame, "rating",
-                    new Random().nextInt(5));
+                    (double) new Random().nextInt(5));
 
             gamesList.add(createdGame);
         }
