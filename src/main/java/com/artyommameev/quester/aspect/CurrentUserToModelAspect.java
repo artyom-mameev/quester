@@ -3,6 +3,7 @@ package com.artyommameev.quester.aspect;
 import com.artyommameev.quester.aspect.annotation.CurrentUserToModel;
 import com.artyommameev.quester.entity.User;
 import com.artyommameev.quester.security.user.ActualUser;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
  * @author Artyom Mameev
  * @see ActualUser
  */
+@Slf4j
 @Component
 @Configurable(autowire = Autowire.BY_TYPE)
 @Aspect
@@ -56,7 +58,11 @@ public class CurrentUserToModelAspect {
             ".CurrentUserToModel)")
     public Object addCurrentUserToModel(ProceedingJoinPoint pjp)
             throws Throwable {
+        log.debug("Trying to add current user object to MVC model");
+
         if (!actualUser.isLoggedIn()) {
+            log.debug("User is not logged in, nothing to add to MVC model");
+
             // continue the normal operation of the method
             return pjp.proceed(pjp.getArgs());
         }
@@ -70,6 +76,9 @@ public class CurrentUserToModelAspect {
         }
 
         model.addAttribute("user", actualUser.getCurrentUser());
+
+        log.info("User '" + actualUser.getCurrentUser().getUsername() + "' " +
+                "was successfully added to MVC model");
 
         return pjp.proceed(pjp.getArgs());
     }
