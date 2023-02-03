@@ -81,7 +81,8 @@ public class LoggingAspect {
             if (log.isDebugEnabled()) {
                 log.debug("Exit: {}.{}() with result = {}",
                         joinPoint.getSignature().getDeclaringTypeName(),
-                        joinPoint.getSignature().getName(), result.toString());
+                        joinPoint.getSignature().getName(), result != null ?
+                                result.toString() : null);
             }
             return result;
         } catch (IllegalArgumentException e) {
