@@ -145,6 +145,18 @@ public final class Comment {
         return Objects.hash(id);
     }
 
+    /**
+     * Returns String representation of the object.
+     *
+     * @return the hash code for the object in the format:
+     * "Comment 'text' for game 'game' from user 'user'"
+     */
+    @Override
+    public String toString() {
+        return "Comment '" + text + "' for game '" +
+                game.toString() + "' from user '" + user.toString() + "'";
+    }
+
     private void setText(String text) throws NullValueException,
             EmptyTextException {
         if (text == null) {

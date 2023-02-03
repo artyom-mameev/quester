@@ -99,6 +99,18 @@ public final class Review {
     }
 
     /**
+     * Returns String representation of the object.
+     *
+     * @return the hash code for the object in the format:
+     * "Review with rating 'rating' for game 'game' from user 'user'"
+     */
+    @Override
+    public String toString() {
+        return "Review with rating '" + rating + "' for game '" +
+                game.toString() + "' from user '" + user.toString() + "'";
+    }
+
+    /**
      * The enumeration that represents a numerical rating from 1 to 5.
      */
     public enum Rating {

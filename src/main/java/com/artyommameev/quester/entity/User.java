@@ -446,6 +446,18 @@ public final class User implements UserDetails {
     }
 
     /**
+     * Returns String representation of the object.
+     *
+     * @return the hash code for the object in the format:
+     * "User 'username' (id) with authorities [authorities]"
+     */
+    @Override
+    public String toString() {
+        return "User '" + username + "' (" + id + ") with authorities " +
+                authorities.toString();
+    }
+
+    /**
      * An exception indicating that some sort of forbidden manipulation
      * attempt has been made to the {@link User}.
      */

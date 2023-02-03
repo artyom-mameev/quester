@@ -701,6 +701,18 @@ public final class Game {
         return Objects.hash(id);
     }
 
+    /**
+     * Returns String representation of the object.
+     *
+     * @return the hash code for the object in the format:
+     * "Game 'name' (id) from user 'user'"
+     */
+    @Override
+    public String toString() {
+        return "Game '" + name + "' (" + id + ") from user '" +
+                user.getUsername() + "'";
+    }
+
     private void setName(String name) throws EmptyStringException,
             NullValueException {
         if (name == null) {

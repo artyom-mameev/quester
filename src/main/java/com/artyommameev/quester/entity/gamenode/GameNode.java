@@ -468,6 +468,17 @@ public abstract class GameNode {
     }
 
     /**
+     * Returns String representation of the object.
+     *
+     * @return the hash code for the object in the format:
+     * "Game node with type 'type' and id 'id'"
+     */
+    @Override
+    public String toString() {
+        return "Game node with type '" + type + "' and id '" + id + "'";
+    }
+
+    /**
      * Returns the current node or one of the current node's children
      * by node id.
      *
@@ -659,6 +670,19 @@ public abstract class GameNode {
         @Override
         public int hashCode() {
             return Objects.hash(flagId, flagState, nodeId);
+        }
+
+        /**
+         * Returns String representation of the object.
+         *
+         * @return the hash code for the object in the format:
+         * "Condition with flagId 'flagId' and flagState 'flagState' for node
+         * with id 'nodeId'"
+         */
+        @Override
+        public String toString() {
+            return "Condition with flagId '" + flagId + "' and flagState '" +
+                    flagState.toString() + "' for node with id '" + nodeId + "'";
         }
 
         /**
