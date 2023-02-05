@@ -405,7 +405,7 @@ the [MIT License](https://opensource.org/licenses/MIT).
 `EmailChecker` code was taken
 from [Spring Boot in Action Sample Code](https://github.com/habuma/spring-boot-in-action-samples)
 which is licensed under
-the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).  
 `LoggingAspect` code was taken
 from [Java Guides](https://www.javaguides.net/2019/05/spring-boot-spring-aop-logging-example-tutorial.html).
 
