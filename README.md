@@ -52,6 +52,7 @@ The backend is written in Java, the main backend technology stack:
 - [Thymeleaf](https://www.thymeleaf.org) to generate dynamic HTML;
 - [Jackson](https://github.com/FasterXML/jackson) for JSON
   serialization/deserialization;
+- [SLF4J](https://www.slf4j.org/)/[Logback](https://logback.qos.ch/) for logging;
 - [Lombok](https://projectlombok.org) to avoid boilerplate code;
 - [WebJars](https://www.webjars.org) for adding JavaScript dependencies directly
   to the project;
@@ -365,7 +366,7 @@ Password: `testpassword`
     data: 'classpath:/sql/triggers.sql'
 ```
 
-#### To enable oAuth2 authorization with Google, you need to [create a new project in Google Developers  Console](https://www.balbooa.com/gridbox-documentation/how-to-get-google-client-id-and-client-secret) and add your `client ID` and `client secret` to the application.yml file.
+#### To enable oAuth2 authorization with Google, you need to [create a new project in Google Developers Console](https://www.balbooa.com/gridbox-documentation/how-to-get-google-client-id-and-client-secret) and add your `client ID` and `client secret` to the application.yml file.
 
 ```yaml
   security:
@@ -405,6 +406,8 @@ the [MIT License](https://opensource.org/licenses/MIT).
 from [Spring Boot in Action Sample Code](https://github.com/habuma/spring-boot-in-action-samples)
 which is licensed under
 the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+`LoggingAspect` code was taken
+from [Java Guides](https://www.javaguides.net/2019/05/spring-boot-spring-aop-logging-example-tutorial.html).
 
 Cover template for Bootstrap by [mdo](https://twitter.com/mdo).
 
