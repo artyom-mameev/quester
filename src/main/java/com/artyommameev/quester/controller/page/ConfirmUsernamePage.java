@@ -77,6 +77,7 @@ public class ConfirmUsernamePage {
      * @see ConfirmUsernameDto
      */
     @PostMapping("/confirm-username")
+    @SuppressWarnings("unused") // model is using in the CurrentUserToModalAspect
     public String confirmUsername(@Valid ConfirmUsernameDto confirmUsernameDto,
                                   BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
