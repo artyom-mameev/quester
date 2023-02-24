@@ -1,6 +1,5 @@
 package com.artyommameev.quester.controller.page;
 
-import com.artyommameev.quester.QuesterApplication;
 import com.artyommameev.quester.aspect.CurrentUserToModelAspect;
 import com.artyommameev.quester.aspect.annotation.CurrentUserToModel;
 import com.artyommameev.quester.controller.page.exception.Page_BadRequestException;
@@ -8,12 +7,11 @@ import com.artyommameev.quester.entity.Comment;
 import com.artyommameev.quester.entity.User;
 import com.artyommameev.quester.service.CommentService;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import static com.artyommameev.quester.QuesterApplication.PAGE_SIZE;
 
 /**
  * A controller for handling a page with {@link Comment}s from a certain
@@ -26,15 +24,20 @@ public class UserCommentsPage {
 
     private final CommentService commentService;
 
+    private final int pageSize;
+
     /**
      * The constructor, through which dependencies are injected by Spring.
      *
      * @param commentService a service that allows to query {@link Comment}
      *                       objects.
+     * @param pageSize       the number of comments per page.
      * @see CommentService
      */
-    public UserCommentsPage(CommentService commentService) {
+    public UserCommentsPage(CommentService commentService,
+                            @Value("${quester.page-size}") int pageSize) {
         this.commentService = commentService;
+        this.pageSize = pageSize;
     }
 
     /**
@@ -53,8 +56,7 @@ public class UserCommentsPage {
      * 'user' - the current {@link User} object, adds via
      * {@link CurrentUserToModelAspect}.
      * <p>
-     * The page size is equal to the {@link QuesterApplication#PAGE_SIZE}
-     * constant.
+     * The page size is equal to the {@link UserCommentsPage#pageSize}.
      *
      * @param model       the Spring MVC model.
      * @param currentPage a request parameter which represents
@@ -69,12 +71,12 @@ public class UserCommentsPage {
     @CurrentUserToModel
     public String showUserCommentsPage(Model model,
                                        @RequestParam(name = "page")
-                                               int currentPage,
+                                       int currentPage,
                                        @RequestParam(name = "user")
-                                               int userId) {
+                                       int userId) {
         try {
             val commentsPage =
-                    commentService.getUserCommentsPage(userId, PAGE_SIZE,
+                    commentService.getUserCommentsPage(userId, pageSize,
                             currentPage - 1);
 
             if (commentsPage.hasContent()) {

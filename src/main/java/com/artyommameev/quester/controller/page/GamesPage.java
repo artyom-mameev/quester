@@ -1,6 +1,5 @@
 package com.artyommameev.quester.controller.page;
 
-import com.artyommameev.quester.QuesterApplication;
 import com.artyommameev.quester.aspect.CurrentUserToModelAspect;
 import com.artyommameev.quester.aspect.annotation.CurrentUserToModel;
 import com.artyommameev.quester.controller.page.exception.Page_BadRequestException;
@@ -9,6 +8,7 @@ import com.artyommameev.quester.entity.User;
 import com.artyommameev.quester.security.user.ActualUser;
 import com.artyommameev.quester.service.GameService;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static com.artyommameev.quester.QuesterApplication.PAGE_SIZE;
 
 /**
  * A controller for handling a pages for viewing a list of {@link Game}s.
@@ -30,6 +28,8 @@ public class GamesPage {
     private final GameService gameService;
     private final ActualUser actualUser;
 
+    private final int pageSize;
+
     /**
      * The constructor, through which dependencies are injected by Spring.
      *
@@ -37,12 +37,15 @@ public class GamesPage {
      *                    {@link Game} objects.
      * @param actualUser  the {@link ActualUser} abstraction which represents
      *                    current normal or oAuth2 user.
+     * @param pageSize    the number of games per page.
      * @see GameService
      * @see ActualUser
      */
-    public GamesPage(GameService gameService, ActualUser actualUser) {
+    public GamesPage(GameService gameService, ActualUser actualUser,
+                     @Value("${quester.page-size}") int pageSize) {
         this.gameService = gameService;
         this.actualUser = actualUser;
+        this.pageSize = pageSize;
     }
 
     /**
@@ -68,8 +71,7 @@ public class GamesPage {
      * 'user' - the current {@link User} object, adds via
      * {@link CurrentUserToModelAspect}.
      * <p>
-     * The page size is equal to the {@link QuesterApplication#PAGE_SIZE}
-     * constant.
+     * The page size is equal to the {@link GamesPage#pageSize}.
      *
      * @param model       the Spring MVC model.
      * @param currentPage a request parameter which represents
@@ -87,20 +89,20 @@ public class GamesPage {
     public String showGamesPage(Model model,
                                 @RequestParam(name = "page") int currentPage,
                                 @RequestParam(name = "sort")
-                                        GameService.SortingMode sortingMode,
+                                GameService.SortingMode sortingMode,
                                 @RequestParam(required = false, name = "user")
-                                        Long userId) {
+                                Long userId) {
         try {
             Page<Game> gamesPage;
             FilterMode filterMode;
 
             if (userId == null) {
                 gamesPage = gameService.getPublishedGamesPage(
-                        currentPage - 1, PAGE_SIZE, sortingMode);
+                        currentPage - 1, pageSize, sortingMode);
                 filterMode = FilterMode.ALL;
             } else {
                 gamesPage = gameService.getUserPublishedGamesPage(
-                        currentPage - 1, PAGE_SIZE, sortingMode,
+                        currentPage - 1, pageSize, sortingMode,
                         userId);
                 filterMode = FilterMode.CREATED_BY_USER;
             }
@@ -133,8 +135,7 @@ public class GamesPage {
      * 'user' - the current {@link User} object, adds via
      * {@link CurrentUserToModelAspect}.
      * <p>
-     * The page size is equal to the {@link QuesterApplication#PAGE_SIZE}
-     * constant.
+     * The page size is equal to the {@link GamesPage#pageSize}.
      *
      * @param model       the Spring MVC model.
      * @param currentPage a request parameter which represents
@@ -148,13 +149,13 @@ public class GamesPage {
     @CurrentUserToModel
     public String showCurrentUserFavoritedGamesPage(Model model,
                                                     @RequestParam(name = "page")
-                                                            int currentPage,
+                                                    int currentPage,
                                                     @RequestParam(name = "sort")
-                                                            GameService.SortingMode
+                                                    GameService.SortingMode
                                                             sortingMode) {
         try {
             val gamesPage = gameService.getUserFavoritedGamesPage(
-                    currentPage - 1, PAGE_SIZE, sortingMode,
+                    currentPage - 1, pageSize, sortingMode,
                     actualUser.getCurrentUser());
 
             setUpGamesPage(gamesPage, FilterMode.FAVORITED_BY_USER,
@@ -184,8 +185,7 @@ public class GamesPage {
      * 'user' - the current {@link User} object, adds via
      * {@link CurrentUserToModelAspect}.
      * <p>
-     * The page size is equal to the {@link QuesterApplication#PAGE_SIZE}
-     * constant.
+     * The page size is equal to the {@link GamesPage#pageSize}.
      *
      * @param model       the Spring MVC model.
      * @param currentPage a request parameter which represents
@@ -198,11 +198,11 @@ public class GamesPage {
     public String showCurrentUserGamesInWorkPage(HttpServletRequest request,
                                                  Model model,
                                                  @RequestParam(name = "page")
-                                                         int currentPage) {
+                                                 int currentPage) {
         try {
             val gamesPage =
                     gameService.getUserNotPublishedGamesPage(
-                            currentPage - 1, PAGE_SIZE,
+                            currentPage - 1, pageSize,
                             actualUser.getCurrentUser());
 
             setUpGamesPage(gamesPage, FilterMode.IN_WORK, currentPage, model);
