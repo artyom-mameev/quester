@@ -13,6 +13,7 @@ import com.artyommameev.quester.entity.gamenode.RoomNode;
 import com.artyommameev.quester.security.user.ActualUser;
 import com.artyommameev.quester.service.GameService;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static com.artyommameev.quester.QuesterApplication.*;
 
 /**
  * A controller for handling a {@link Game} editing page.
@@ -36,6 +35,11 @@ public class GameEditorPage {
     private final GameService gameService;
     private final ActualUser actualUser;
 
+    private final String roomIconPath;
+    private final String choiceIconPath;
+    private final String flagIconPath;
+    private final String conditionIconPath;
+
     /**
      * The constructor, through which dependencies are injected by Spring.
      *
@@ -46,9 +50,21 @@ public class GameEditorPage {
      * @see GameService
      * @see ActualUser
      */
-    public GameEditorPage(GameService gameService, ActualUser actualUser) {
+    public GameEditorPage(GameService gameService, ActualUser actualUser,
+                          @Value("${game-editor.room-icon-path}")
+                          String roomIconPath,
+                          @Value("${game-editor.choice-icon-path}")
+                          String choiceIconPath,
+                          @Value("${game-editor.flag-icon-path}")
+                          String flagIconPath,
+                          @Value("${game-editor.condition-icon-path}")
+                          String conditionIconPath) {
         this.gameService = gameService;
         this.actualUser = actualUser;
+        this.roomIconPath = roomIconPath;
+        this.choiceIconPath = choiceIconPath;
+        this.flagIconPath = flagIconPath;
+        this.conditionIconPath = conditionIconPath;
     }
 
     /**
@@ -86,11 +102,11 @@ public class GameEditorPage {
             val baseUrl = getBaseUrl(request);
 
             model.addAttribute("game", game);
-            model.addAttribute("roomIconUrl", baseUrl + ROOM_ICON_PATH);
-            model.addAttribute("choiceIconUrl", baseUrl + CHOICE_ICON_PATH);
-            model.addAttribute("flagIconUrl", baseUrl + FLAG_ICON_PATH);
+            model.addAttribute("roomIconUrl", baseUrl + roomIconPath);
+            model.addAttribute("choiceIconUrl", baseUrl + choiceIconPath);
+            model.addAttribute("flagIconUrl", baseUrl + flagIconPath);
             model.addAttribute("conditionIconUrl", baseUrl +
-                    CONDITION_ICON_PATH);
+                    conditionIconPath);
 
             return "game-editor";
         } catch (GameService.GameNotFoundException e) {

@@ -1,10 +1,6 @@
 package com.artyommameev.quester;
 
 import com.artyommameev.quester.convert.LowercaseStringToSortingModeEnumConverter;
-import com.artyommameev.quester.entity.gamenode.ChoiceNode;
-import com.artyommameev.quester.entity.gamenode.ConditionNode;
-import com.artyommameev.quester.entity.gamenode.FlagNode;
-import com.artyommameev.quester.entity.gamenode.RoomNode;
 import lombok.val;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,26 +29,6 @@ import java.util.Locale;
 @Configuration
 @EnableAspectJAutoProxy
 public class QuesterApplication implements WebMvcConfigurer {
-
-    /**
-     * The constant that represents a icon url for a {@link RoomNode}.
-     */
-    public static final String ROOM_ICON_PATH = "/icons/room-icon.png";
-
-    /**
-     * The constant that represents a icon url for a {@link ChoiceNode}.
-     */
-    public static final String CHOICE_ICON_PATH = "/icons/choice-icon.png";
-
-    /**
-     * The constant that represents a icon url for a {@link FlagNode}.
-     */
-    public static final String FLAG_ICON_PATH = "/icons/flag-icon.png";
-
-    /**
-     * The constant that represents a icon url for a {@link ConditionNode}.
-     */
-    public static final String CONDITION_ICON_PATH = "/icons/condition-icon.png";
 
     /**
      * The constant that represents a maximum number of elements on page.
