@@ -77,7 +77,8 @@ public class CurrentUserToModelAspect {
 
         model.addAttribute("user", actualUser.getCurrentUser());
 
-        log.info("User '" + actualUser.getCurrentUser().getUsername() + "' " +
+        log.info("User '" + (actualUser.getCurrentUser() != null ?
+                actualUser.getCurrentUser().getUsername() : "null") + " " +
                 "was successfully added to MVC model");
 
         return pjp.proceed(pjp.getArgs());
