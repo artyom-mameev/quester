@@ -43,10 +43,18 @@ public class GameEditorPage {
     /**
      * The constructor, through which dependencies are injected by Spring.
      *
-     * @param gameService a service that allows to query, interact and save
-     *                    {@link Game} objects
-     * @param actualUser  the {@link ActualUser} abstraction which represents
-     *                    current normal or oAuth2 user.
+     * @param gameService       a service that allows to query, interact and save
+     *                          {@link Game} objects
+     * @param actualUser        the {@link ActualUser} abstraction which
+     *                          represents current normal or oAuth2 user.
+     * @param roomIconPath      a relative icon url for {@link RoomNode},
+     *                          defined in the application.properties
+     * @param choiceIconPath    a relative icon url for {@link ChoiceNode},
+     *                          defined in the application.properties
+     * @param flagIconPath      a relative icon url for {@link FlagNode},
+     *                          defined in the application.properties
+     * @param conditionIconPath a relative icon url for {@link ConditionNode},
+     *                          defined in the application.properties
      * @see GameService
      * @see ActualUser
      */
@@ -74,10 +82,10 @@ public class GameEditorPage {
      * Adds to the Spring MVC model:
      * <p>
      * 'game' - the {@link Game} that should be edited;<br>
-     * 'roomIconUrl' - an icon url for a {@link RoomNode};<br>
-     * 'choiceIconUrl' - an icon url for a {@link ChoiceNode};<br>
-     * 'flagIconUrl' - an icon url for a {@link FlagNode};<br>
-     * 'conditionIconUrl' - an icon url for a {@link ConditionNode};<br>
+     * 'roomIconUrl' - a relative icon url for a {@link RoomNode};<br>
+     * 'choiceIconUrl' - a relative icon url for a {@link ChoiceNode};<br>
+     * 'flagIconUrl' - a relative icon url for a {@link FlagNode};<br>
+     * 'conditionIconUrl' - a relative icon url for a {@link ConditionNode};<br>
      * 'user' - the current {@link User} object, adds via
      * {@link CurrentUserToModelAspect}.
      *
