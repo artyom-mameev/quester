@@ -31,11 +31,6 @@ import java.util.Locale;
 public class QuesterApplication implements WebMvcConfigurer {
 
     /**
-     * The constant that represents a maximum number of elements on page.
-     */
-    public static final int PAGE_SIZE = 10;
-
-    /**
      * The constant that represents a minimum size of string that can be
      * stored into the database.
      */
