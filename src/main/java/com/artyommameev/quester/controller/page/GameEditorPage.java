@@ -51,13 +51,13 @@ public class GameEditorPage {
      * @see ActualUser
      */
     public GameEditorPage(GameService gameService, ActualUser actualUser,
-                          @Value("${game-editor.room-icon-path}")
+                          @Value("${quester.game-editor.room-icon-path}")
                           String roomIconPath,
-                          @Value("${game-editor.choice-icon-path}")
+                          @Value("${quester.game-editor.choice-icon-path}")
                           String choiceIconPath,
-                          @Value("${game-editor.flag-icon-path}")
+                          @Value("${quester.game-editor.flag-icon-path}")
                           String flagIconPath,
-                          @Value("${game-editor.condition-icon-path}")
+                          @Value("${quester.game-editor.condition-icon-path}")
                           String conditionIconPath) {
         this.gameService = gameService;
         this.actualUser = actualUser;
