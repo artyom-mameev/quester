@@ -52,7 +52,7 @@ public abstract class GameNode {
     @Getter
     private long dbId;
 
-    @Column(name="NODE_ID", nullable = false, updatable = false)
+    @Column(name = "NODE_ID", nullable = false, updatable = false)
     @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
     @Getter
     private String id;
@@ -73,6 +73,17 @@ public abstract class GameNode {
     @Enumerated(EnumType.STRING)
     private NodeType type;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "GAME_NODE_HAVING_GAME_NODE_CONDITION",
+            joinColumns = @JoinColumn(name = "GAME_NODE_ID",
+                    referencedColumnName = "ID",
+                    foreignKey = @ForeignKey(name =
+                            "FK_GAME_NODE_GAME_NODE_CONDITION_GAME_NODE_ID")),
+            inverseJoinColumns = @JoinColumn(name = "GAME_NODE_CONDITION_ID",
+                    referencedColumnName = "ID",
+                    foreignKey = @ForeignKey(name =
+                            "FK_GAME_NODE_GAME_NODE_CONDITION_GAME_NODE_CONDITION_ID")))
     @Getter
     @Setter(AccessLevel.PROTECTED)
     private Condition condition;
@@ -88,8 +99,11 @@ public abstract class GameNode {
 
     /**
      * Instantiates a new Game Node.
+     * <p>
+     * After the object is created, it must be saved in the database
+     * to be assigned a unique id.
      *
-     * @param id an id of the game node.
+     * @param id an id of the game node (not a database id).
      * @throws EmptyStringException if the id is empty.
      * @throws NullValueException   if the id is null.
      */
@@ -618,9 +632,16 @@ public abstract class GameNode {
      *
      * @author Artyom Mameev
      */
-    @Embeddable
+    @Entity
+    @Table(name = "GAME_NODE_CONDITION")
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public final static class Condition {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @Column(name = "ID")
+        @Getter
+        private long id;
 
         @Column(name = "CONDITION_FLAG_ID")
         @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
@@ -637,6 +658,9 @@ public abstract class GameNode {
 
         /**
          * Instantiates a new Condition.
+         * <p>
+         * After the object is created, it must be saved in the database
+         * to be assigned a unique id.
          *
          * @param flagId    an id of the {@link FlagNode}, after a certain
          *                  state of which the {@link ConditionNode} with this
