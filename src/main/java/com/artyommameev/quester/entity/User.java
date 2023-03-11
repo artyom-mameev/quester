@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static com.artyommameev.quester.QuesterApplication.*;
 
 /**
- * A User domain entity. Encapsulates an user of the service.
+ * A User domain entity. Encapsulates a user of the service.
  *
  * @author Artyom Mameev
  */
