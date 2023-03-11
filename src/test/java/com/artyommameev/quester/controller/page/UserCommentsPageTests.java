@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,7 +34,6 @@ import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.artyommameev.quester.QuesterApplication.PAGE_SIZE;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -74,6 +74,9 @@ public class UserCommentsPageTests {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Page<Comment> page;
 
+    @Value("${quester.page-size}")
+    private int pageSize;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders
@@ -99,7 +102,7 @@ public class UserCommentsPageTests {
 
     @Test
     public void withNeededParamsOkFromGuest() throws Exception {
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
         when(actualUser.getCurrentUser()).thenReturn(user);
 
@@ -110,7 +113,7 @@ public class UserCommentsPageTests {
     @Test
     public void withNeededParamsOkFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
         when(actualUser.getCurrentUser()).thenReturn(user);
 
@@ -139,7 +142,7 @@ public class UserCommentsPageTests {
         when(page.getContent()).thenReturn(Collections.emptyList());
         when(page.hasContent()).thenReturn(true);
         when(page.getTotalPages()).thenReturn(2);
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
 
         mockMvc.perform(get("/comments?page=1&user=1"))
@@ -155,7 +158,7 @@ public class UserCommentsPageTests {
         when(page.getContent()).thenReturn(Collections.emptyList());
         when(page.hasContent()).thenReturn(true);
         when(page.getTotalPages()).thenReturn(2);
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
         when(actualUser.getCurrentUser()).thenReturn(user);
 
@@ -172,7 +175,7 @@ public class UserCommentsPageTests {
         when(page.getContent()).thenReturn(Collections.emptyList());
         when(page.hasContent()).thenReturn(true);
         when(page.getTotalPages()).thenReturn(2);
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
         when(actualUser.getCurrentUser()).thenReturn(user);
 
@@ -184,18 +187,18 @@ public class UserCommentsPageTests {
 
     @Test
     public void withNeededParamsCallsCommentService() throws Exception {
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
 
         mockMvc.perform(get("/comments?page=1&user=1"));
 
         verify(commentService, times(1))
-                .getUserCommentsPage(1L, PAGE_SIZE, 0);
+                .getUserCommentsPage(1L, pageSize, 0);
     }
 
     @Test
     public void withPartialParamsRedirectsToPageWithAllNeededParams() throws Exception {
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
 
         var mvcResult = mockMvc.perform(
@@ -215,7 +218,7 @@ public class UserCommentsPageTests {
 
     @Test
     public void withoutParamsRedirectsToPageWithAllNeededParams() throws Exception {
-        when(commentService.getUserCommentsPage(1L, PAGE_SIZE, 0))
+        when(commentService.getUserCommentsPage(1L, pageSize, 0))
                 .thenReturn(page);
 
         val mvcResult = mockMvc.perform(
@@ -234,7 +237,7 @@ public class UserCommentsPageTests {
 
         doThrow(new CommentService.IllegalPageValueException("Test"))
                 .when(commentService).getUserCommentsPage(1L,
-                PAGE_SIZE, 0);
+                        pageSize, 0);
 
         mockMvc.perform(get("/comments?page=1&user=1"))
                 .andExpect(status().isBadRequest());

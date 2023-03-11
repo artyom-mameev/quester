@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -74,6 +75,9 @@ public class GamesPageTests {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Page<Game> page;
 
+    @Value("${quester.page-size}")
+    private int pageSize;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders
@@ -98,7 +102,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsOkFromGuest() throws Exception {
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"))
@@ -107,7 +111,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithPartialParamsRedirectsToPageWithAllNeededParams() throws Exception {
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         var mvcResult = mockMvc.perform(get(
@@ -127,7 +131,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithoutParamsRedirectsToPageWithAllNeededParams() throws Exception {
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         val mvcResult = mockMvc.perform(get(
@@ -142,7 +146,7 @@ public class GamesPageTests {
     @WithMockCustomUser
     public void gamesWithNeededParamsOkFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"))
@@ -168,7 +172,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsContainsGeneralAttributesFromGuest() throws Exception {
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"))
@@ -181,7 +185,7 @@ public class GamesPageTests {
     @WithMockCustomUser
     public void gamesWithNeededParamsContainsGeneralAttributesFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
         when(actualUser.getCurrentUser()).thenReturn(user);
 
@@ -194,7 +198,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsSetsTotalPageAttributeToOneWhenNoContent() throws Exception {
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"))
@@ -206,7 +210,7 @@ public class GamesPageTests {
         when(page.hasContent()).thenReturn(true);
         when(page.getTotalPages()).thenReturn(2);
         when(page.getContent()).thenReturn(Collections.emptyList());
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"))
@@ -216,13 +220,13 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsCallsGameService() throws Exception {
-        when(gameService.getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST)).thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"));
 
         verify(gameService, times(1))
-                .getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+                .getPublishedGamesPage(0, pageSize,
                         GameService.SortingMode.OLDEST);
     }
 
@@ -233,7 +237,7 @@ public class GamesPageTests {
         when(actualUser.getCurrentUser()).thenReturn(user);
 
         doThrow(new GameService.IllegalPageValueException("Test"))
-                .when(gameService).getPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+                .when(gameService).getPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST);
 
         mockMvc.perform(get("/games?page=1&sort=oldest"))
@@ -256,7 +260,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsAndUserParamOkFromGuest() throws Exception {
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -266,7 +270,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithPartialParamsAndUserParamRedirectsToPageWithAllNeededParams() throws Exception {
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -289,7 +293,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWitoutAllNeededParamsAndWithUserParamRedirectsToPageWithAllNeededParams() throws Exception {
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -306,7 +310,7 @@ public class GamesPageTests {
     @WithMockCustomUser
     public void gamesWithNeededParamsAndUserParamOkFromUserWithConfirmedUsernameWithParams() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -333,7 +337,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsAndUserParamContainsGeneralAttributesFromGuest() throws Exception {
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -347,7 +351,7 @@ public class GamesPageTests {
     @WithMockCustomUser
     public void gamesWithNeededParamsAndUserParamContainsGeneralAttributesFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
         when(actualUser.getCurrentUser()).thenReturn(user);
@@ -361,7 +365,7 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsAndUserParamSetsTotalPageAttributeToOneWhenNoContent() throws Exception {
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -374,7 +378,7 @@ public class GamesPageTests {
         when(page.hasContent()).thenReturn(true);
         when(page.getTotalPages()).thenReturn(2);
         when(page.getContent()).thenReturn(Collections.emptyList());
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
@@ -385,14 +389,14 @@ public class GamesPageTests {
 
     @Test
     public void gamesWithNeededParamsAndUserParamCallsUserService() throws Exception {
-        when(gameService.getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserPublishedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, 1L))
                 .thenReturn(page);
 
         mockMvc.perform(get("/games?page=1&sort=oldest&user=1"));
 
         verify(gameService, times(1))
-                .getUserPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+                .getUserPublishedGamesPage(0, pageSize,
                         GameService.SortingMode.OLDEST, 1L);
     }
 
@@ -404,7 +408,7 @@ public class GamesPageTests {
 
         doThrow(new GameService.IllegalPageValueException("Test"))
                 .when(gameService).getUserPublishedGamesPage(0,
-                QuesterApplication.PAGE_SIZE, GameService.SortingMode.OLDEST, 1L);
+                pageSize, GameService.SortingMode.OLDEST, 1L);
 
         mockMvc.perform(get("/games?page=1&sort=oldest&user=1"))
                 .andExpect(status().isBadRequest());
@@ -427,7 +431,7 @@ public class GamesPageTests {
     @Test
     public void userFavoritesWithNeededParamsRedirectsToLoginFromGuest() throws Exception {
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
 
@@ -444,7 +448,7 @@ public class GamesPageTests {
     public void userFavoritesWithNeededParamsOkFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
         when(user.getId()).thenReturn(1L);
@@ -475,7 +479,7 @@ public class GamesPageTests {
     public void userFavoritesWithPartialParamsRedirectsToPageWithAllNeededParamsFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
         when(user.getId()).thenReturn(1L);
@@ -501,7 +505,7 @@ public class GamesPageTests {
     public void userFavoritesWithoutParamsRedirectsToPageWithAllNeededParamsFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
         when(user.getId()).thenReturn(1L);
@@ -519,7 +523,7 @@ public class GamesPageTests {
     public void userFavoritesWithNeededParamsContainsGeneralAttributesFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
         when(user.getId()).thenReturn(1L);
@@ -540,7 +544,7 @@ public class GamesPageTests {
         when(page.getContent()).thenReturn(Collections.emptyList());
         when(actualUser.getCurrentUser()).thenReturn(user);
         when(user.getId()).thenReturn(1L);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
 
@@ -554,7 +558,7 @@ public class GamesPageTests {
     public void userFavoritesWithNeededParamsSetsTotalPageAttributeToOneFromUserWithConfirmedUsernameWhenNoContent() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
         when(user.getId()).thenReturn(1L);
@@ -568,7 +572,7 @@ public class GamesPageTests {
     public void userFavoritesWithNeededParamsCallsUserServiceFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserFavoritedGamesPage(0, pageSize,
                 GameService.SortingMode.OLDEST, user))
                 .thenReturn(page);
         when(user.getId()).thenReturn(1L);
@@ -576,7 +580,7 @@ public class GamesPageTests {
         mockMvc.perform(get("/favorites?page=1&sort=oldest"));
 
         verify(gameService, times(1))
-                .getUserFavoritedGamesPage(0, QuesterApplication.PAGE_SIZE,
+                .getUserFavoritedGamesPage(0, pageSize,
                         GameService.SortingMode.OLDEST, user);
     }
 
@@ -589,7 +593,7 @@ public class GamesPageTests {
 
         doThrow(new GameService.IllegalPageValueException("Test"))
                 .when(gameService).getUserFavoritedGamesPage(0,
-                QuesterApplication.PAGE_SIZE, GameService.SortingMode.OLDEST, user);
+                pageSize, GameService.SortingMode.OLDEST, user);
 
         mockMvc.perform(get("/favorites?page=1&sort=oldest"))
                 .andExpect(status().isBadRequest());
@@ -612,7 +616,7 @@ public class GamesPageTests {
     @Test
     public void gamesInWorkWithPageParamRedirectsToLoginFromGuest() throws Exception {
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
 
         val mvcResult = mockMvc.perform(
@@ -628,7 +632,7 @@ public class GamesPageTests {
     public void gamesInWorkWithPageParamOkFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
         when(user.getId()).thenReturn(1L);
 
@@ -658,7 +662,7 @@ public class GamesPageTests {
     public void gamesInWorkWithoutPageParamRedirectsToPageWithPageParamFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
         when(user.getId()).thenReturn(1L);
 
@@ -674,7 +678,7 @@ public class GamesPageTests {
     public void gamesInWorkWithPageParamContainsGeneralAttributesFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
         when(user.getId()).thenReturn(1L);
 
@@ -694,7 +698,7 @@ public class GamesPageTests {
         when(page.getContent()).thenReturn(Collections.emptyList());
         when(actualUser.getCurrentUser()).thenReturn(user);
         when(user.getId()).thenReturn(1L);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
 
         mockMvc.perform(get("/in-work?page=1"))
@@ -707,7 +711,7 @@ public class GamesPageTests {
     public void gamesInWorkWithPageParamSetsTotalPageAttributeToOneFromUserWithConfirmedUsernameWhenNoContent() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
         when(user.getId()).thenReturn(1L);
 
@@ -720,14 +724,14 @@ public class GamesPageTests {
     public void gamesInWorkWithPageParamCallsUserServiceFromUserWithConfirmedUsername() throws Exception {
         when(actualUser.isLoggedIn()).thenReturn(true);
         when(actualUser.getCurrentUser()).thenReturn(user);
-        when(gameService.getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+        when(gameService.getUserNotPublishedGamesPage(0, pageSize,
                 user)).thenReturn(page);
         when(user.getId()).thenReturn(1L);
 
         mockMvc.perform(get("/in-work?page=1"));
 
         verify(gameService, times(1))
-                .getUserNotPublishedGamesPage(0, QuesterApplication.PAGE_SIZE,
+                .getUserNotPublishedGamesPage(0, pageSize,
                         user);
     }
 
@@ -740,7 +744,7 @@ public class GamesPageTests {
 
         doThrow(new GameService.IllegalPageValueException("Test"))
                 .when(gameService).getUserNotPublishedGamesPage(0,
-                QuesterApplication.PAGE_SIZE, user);
+                pageSize, user);
 
         mockMvc.perform(get("/in-work?page=1"))
                 .andExpect(status().isBadRequest());
