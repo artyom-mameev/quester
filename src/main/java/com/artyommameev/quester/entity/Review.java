@@ -17,25 +17,38 @@ import java.util.Objects;
  * @author Artyom Mameev
  */
 @Entity
+@Table(name = "REVIEW")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     @Getter
     private long id;
 
+    @Column(name = "RATING", nullable = false)
     @Range(min = 1, max = 5)
     @Getter
     private int rating;
 
-    @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "GAME_ID",
+            referencedColumnName = "ID",
+            updatable = false,
+            foreignKey = @ForeignKey(name = "FK_REVIEW_GAME_ID")
+    )
     @Getter
     private Game game;
 
-    @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "USER_ID",
+            referencedColumnName = "ID",
+            updatable = false,
+            foreignKey = @ForeignKey(name = "FK_REVIEW_USER_ID")
+    )
     @Getter
     private User user;
 

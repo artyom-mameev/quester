@@ -4,6 +4,7 @@ import com.artyommameev.quester.entity.Game;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
@@ -18,6 +19,7 @@ import javax.persistence.Entity;
  * @see GameNode
  */
 @Entity
+@DiscriminatorValue("FlagNode")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FlagNode extends GameNode {
 

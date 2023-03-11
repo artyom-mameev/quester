@@ -3,6 +3,7 @@ package com.artyommameev.quester.entity.gamenode;
 import com.artyommameev.quester.entity.Game;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
@@ -29,7 +30,17 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 // more appropriate for the 'composite' pattern
+@Table(name = "GAME_NODE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+/*to avoid duplicating the node type between the 'DTYPE' and 'TYPE' columns;
+because the type field is necessary in the subject model, and
+the discriminator column is not part of it*/
+@DiscriminatorFormula("case " +
+        "when type = 'ROOM' then 'RoomNode' " +
+        "when type = 'CHOICE' then 'ChoiceNode' " +
+        "when type = 'FLAG' then 'FlagNode' " +
+        "when type = 'CONDITION' then 'ConditionNode' " +
+        "end")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // for lazy loading when serializing to json
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -37,23 +48,26 @@ public abstract class GameNode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     @Getter
     private long dbId;
 
-    @Column(nullable = false, updatable = false)
-    @Getter
+    @Column(name="NODE_ID", nullable = false, updatable = false)
     @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
+    @Getter
     private String id;
 
-    @Getter
+    @Column(name = "NAME")
     @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
+    @Getter
     private String name;
 
-    @Getter
+    @Column(name = "DESCRIPTION")
     @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
+    @Getter
     private String description;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "TYPE", nullable = false, updatable = false)
     @Getter
     @Setter(AccessLevel.PROTECTED)
     @Enumerated(EnumType.STRING)
@@ -65,7 +79,11 @@ public abstract class GameNode {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OnDelete(action = CASCADE)
-    @JoinColumn
+    @JoinColumn(
+            name = "PARENT_ID",
+            referencedColumnName = "ID",
+            foreignKey = @ForeignKey(name = "FK_GAME_NODE_PARENT_ID")
+    )
     private final List<GameNode> children = new ArrayList<>();
 
     /**
@@ -603,13 +621,16 @@ public abstract class GameNode {
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public final static class Condition {
+
+        @Column(name = "CONDITION_FLAG_ID")
         @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
         @Getter
         private String flagId;
-        @Getter
         @Enumerated(EnumType.STRING)
+        @Column(name = "CONDITION_FLAG_STATE")
+        @Getter
         private FlagState flagState;
-        @Column(updatable = false)
+        @Column(name = "CONDITION_NODE_ID", updatable = false)
         @Size(min = MIN_STRING_SIZE, max = MAX_SHORT_STRING_SIZE)
         @Getter
         private String nodeId;

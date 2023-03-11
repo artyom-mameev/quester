@@ -21,34 +21,47 @@ import static com.artyommameev.quester.QuesterApplication.MIN_STRING_SIZE;
  * @author Artyom Mameev
  */
 @Entity
+@Table(name = "COMMENT")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     @Getter
     private long id;
 
-    @Column(nullable = false)
+    @Column(name = "TEXT", nullable = false)
     @Size(min = MIN_STRING_SIZE, max = MAX_LONG_STRING_SIZE)
     @Getter
     private String text;
 
-    @Column(nullable = false)
+    @Column(name = "DATE", nullable = false)
     @Getter
     private Date date;
 
+    @Column(name = "EDITED")
     @Getter
     private boolean edited;
 
-    @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "GAME_ID",
+            referencedColumnName = "ID",
+            updatable = false,
+            foreignKey = @ForeignKey(name = "FK_COMMENT_GAME_ID")
+    )
     @JsonBackReference
     @Getter
     private Game game;
 
-    @JoinColumn(updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "USER_ID",
+            referencedColumnName = "ID",
+            updatable = false,
+            foreignKey = @ForeignKey(name = "FK_COMMENT_USER_ID")
+    )
     @Getter
     private User user;
 

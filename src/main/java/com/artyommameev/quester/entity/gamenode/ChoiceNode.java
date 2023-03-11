@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
@@ -19,6 +20,7 @@ import javax.persistence.Entity;
  * @see GameNode
  */
 @Entity
+@DiscriminatorValue("ChoiceNode")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChoiceNode extends GameNode {
 
