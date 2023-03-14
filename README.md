@@ -147,9 +147,6 @@ H2 in-memory database is used as a database.
 
 ## Architecture
 
-![Entity Relationship Diagram](readme/diagram.png)
-<sup>An entity relationship diagram</sup>
-
 - A clean package structure, with classes organized by purpose, area of
   responsibility, and level of abstraction;
 - Unified operations on regular users and oAuth2 users using a special
@@ -214,6 +211,12 @@ H2 in-memory database is used as a database.
 <a name="data"/>
 
 ## Data storage
+
+![Entity Relationship Diagram](readme/diagram.png)
+<sup>An entity relationship diagram</sup>
+
+![Database Schema Diagram](readme/sql_diagram.png)
+<sup>A database Schema Diagram</sup>
 
 - When designing the ORM model, a special attention was paid to usability and
   flexibility of relationships between entities, so that operations have a
