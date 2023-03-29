@@ -190,7 +190,7 @@ H2 in-memory database is used as a database.
 
 - Focus to write simple and readable code;
 - Simple and meaningful names of classes, methods and variables, separation of
-  different aspects of functionality in separate methods;
+  different aspects of functionality to separate methods;
 - The code is accompanied by documentation, with complex points accompanied by
   comments;
 - Separation of complex code constructs into several primitive parts for better
