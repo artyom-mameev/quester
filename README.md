@@ -13,9 +13,9 @@ is covered by unit/integration tests and documented.
 Based on a considerable number of business logic requirements, in order to avoid
 unnecessary complexity and internal inconsistency, in the process of the
 development were considered the advantages and disadvantages of different
-approaches to designing the application architecture and ORM model, and were
-chosen solutions that were regarded as the most justified in the context of the
-application.
+approaches to designing the application architecture and ORM model, and solutions
+that were regarded as the most justified in the context of the application were
+chosen.
 
 ![Spring Text Game Creator - Games Page](readme/screenshots/1-general.png)
 
@@ -92,7 +92,7 @@ H2 in-memory database is used as a database.
 
 ## Features
 
-- A simple user interface using cards and modal windows, which alerts the user
+- A simple user interface using cards and modal windows, which alerts the users
   about errors, warns about the possible irreversibility of operations, and
   informs about the successful completion of actions, the result of which is not
   obvious;
@@ -102,41 +102,36 @@ H2 in-memory database is used as a database.
 - Use of RememberMe technology;
 - Users can edit their registration data;
 - Full-fledged text games constructor with a simple interface that allows the
-  users to create and edit game elements;
-- Users can save games for private access only and publish or hide them from
-  public access;
-- Users can view a list of their own hidden games with pagination, and
-  individually test them;
+  users to create and edit games;
+- Users can save games for private access only and change their visibility;
+- Content pages are accompanied by pagination;
+- Users can view a list of their private games and individually test them;
 - Users can edit and delete their own and others' (for administrators) games;
-- Multilanguage support - at the moment the English and Russian localization is
-  fully available, between which the user can switch directly on the fly, it is
+- Multilingual support - at the moment the English and Russian localization is
+  fully available, between which the users can switch directly on the fly, it is
   also possible to create games in different languages;
-- Users can view the list of all released games with sorting by date of creation
-  or rating, with basic information about each game and basic actions, as well
-  as pagination;
-- Users can rate games, for each game is calculated a global rating;
+- Users can view a list of all released games on the service with sorting by
+  date/creation/rating and basic information/actions;
+- Users can rate games, a global rating is calculated for each game;
 - Users can write comments to the games;
 - Users can edit and delete their own or others' (for administrators) comments;
-- Users can play any published games;
+- Users can play any published games directly in the browser;
 - Users can receive any published games via API in JSON format for possible
-  implementation of third-party clients;
-- Users can add games to favorites list;
-- Users can view their own favorites list, sorted by creation date or rating,
-  with basic information about each game and basic actions, as well as
-  pagination;
-- Individual pages for each game with detailed information and actions, as well
-  as social media buttons;
-- Users can see a basic information about any user, including user's rating 
-  (calculated from the rating of games created by the user), the number of games
+  implementation of third-party game players;
+- Users can add games to their favorites list;
+- Users can view their favorites list with sorting by creation date/rating and
+  basic information/actions;
+- Individual pages for each game with detailed information/actions, accompanied
+  by social media buttons;
+- Users can view basic information about any user, including user's rating 
+  (calculated from the rating of the games created by the user), the number of games
   created, the number of games rated, the number of comments posted;
-- Users can see a list of all games created by a particular user, sorted by date
-  of creation or rating, with basic information about each game and basic
-  actions, as well as pagination;
-- Users can see a list of all comments created by a specific user, with
-  pagination;
-- Admins can block a specific user or delete all their games, ratings or
+- Users can view a list of all games created by a specific user with sorting
+  by date of creation/rating and basic information/actions;
+- Users can view a list of all comments created by a specific user;
+- Administrators can block a specific user or delete all their games, ratings or
   comments;
-- Protection against unauthorized access with Spring Security technologies,
+- Protection against unauthorized access using Spring Security technologies,
   stock protection against CSRF attacks.
 
 [<img width="233px" src="readme/screenshots/2-for-preview-1-pre.png" />](https://github.com/artyom-mameev/quester/blob/master/readme/screenshots/2-for-preview-1-full.png?raw=true) [<img width="233px" src="readme/screenshots/2-for-preview-2-pre.png" />](https://github.com/artyom-mameev/quester/blob/master/readme/screenshots/2-for-preview-2-full.png?raw=true) [<img width="233px" src="readme/screenshots/2-for-preview-3-pre.png" />](https://github.com/artyom-mameev/quester/blob/master/readme/screenshots/2-for-preview-3-full.png?raw=true)  
@@ -149,10 +144,6 @@ H2 in-memory database is used as a database.
 
 - A clean package structure, with classes organized by purpose, area of
   responsibility, and level of abstraction;
-- Unified operations on regular users and oAuth2 users using a special
-  abstraction;
-- Using AOP to avoid the boilerplate operation of adding the current user object
-  to the Spring MVC model;
 - The layers of controllers, services, repositories and business objects are
   separated according to the principles of separation of concerns and loose
   coupling - each level handles only its own tasks and delegates other tasks to
@@ -160,7 +151,7 @@ H2 in-memory database is used as a database.
 - A focus on generally accepted good coding principles and design patterns (for
   example, to implement a complex tree structure of game elements, the
   advantages of the "composite" pattern were used, which allowed to conveniently
-  manage the elements using recursive search algorithms);
+  manage the elements using a recursive search algorithm);
 - Following encapsulation principles to provide convenient and secure
   interfaces;
 - To protect data integrity, interfaces mostly return immutable objects to the
@@ -168,13 +159,13 @@ H2 in-memory database is used as a database.
 - The validation mechanism for user input is separated and implemented using
   Java Bean Validation;
 - Data integrity validation for complex objects is a part of the business
-  logic (which allows not to open their internals to external validators), user
-  errors generating unchecked exceptions that wraps into other exceptions
+  logic (which allows not to open their internals to external validators). User
+  errors generates unchecked exceptions that wraps into other exceptions
   depending on the level of abstraction, and once the controller level is
-  reached a low-level exception generates, then handles by an external handler
-  that answers the client request with the appropriate error with the root cause
+  reached, there generates a low-level exception that handles by an external handler
+  that answers the client request with the appropriate error using the root cause
   text of the exception. This allowed to separate the user error handling from
-  the corresponding levels and focus solely on the logic corresponding to the
+  the business logic levels and focus solely on the logic corresponding to a
   particular level of abstraction;
 - REST API controllers and dynamic page content controllers are separated and
   can function self-sufficiently;
@@ -182,14 +173,15 @@ H2 in-memory database is used as a database.
   to implement third-party clients that implement certain aspects of a service's
   functionality (e.g., third-party game constructors);
 - Access conditions to certain pages and API endpoints were separated into
-  Spring Security filters (for example, a mechanism that denies access to the
+  filters (for example, a mechanism that denies access to the
   login or registration page for users who are already authenticated, a
-  mechanism that adds the necessary path variables to URLs if they are missing,
-  etc.), all exceptions related to access conditions and authentication are
-  handled exclusively at the Spring Security level;
+  mechanism that adds a necessary path variables to URLs if they are missing,
+  etc.), all exceptions related to the access conditions are
+  handled exclusively at the filters level;
+- Using AOP to separate some cross-cutting functionality;
 - The JavaScript code is split into "pseudo-modules" by splitting them into
-  separate files according to the principles of separation of concerns and
-  better testability;
+  separate files according to the principles of separation of concerns. That
+  also makes them more testable;
 - Use of Thymeleaf fragments to reuse static page content.
 
 <a name="style"/>
@@ -201,10 +193,9 @@ H2 in-memory database is used as a database.
   different aspects of functionality in separate methods;
 - The code is accompanied by documentation, with complex points accompanied by
   comments;
-- Division of complex code constructs into several primitive parts for better
-  understanding;
+- Separation of complex code constructs into several primitive parts for better
+  understanding, the code is also separated by purpose;
 - Limiting the number of characters by line width for better readability;
-- Diverse operations are separated by indents;
 - Avoiding "spaghetti code" (nested ifs);
 - Using Lombok to avoid boilerplate code.
 
@@ -212,39 +203,33 @@ H2 in-memory database is used as a database.
 
 ## Data storage
 
-![Entity Relationship Diagram](readme/diagram.png)
-<sup>An entity relationship diagram</sup>
+![Entities Relationship Diagram](readme/diagram.png)
+<sup>An entities relationship diagram</sup>
 
 ![Database Schema Diagram](readme/sql_diagram.png)
-<sup>A database Schema Diagram</sup>
+<sup>A database schema diagram</sup>
 
 - When designing the ORM model, a special attention was paid to usability and
-  flexibility of relationships between entities, so that operations have a
-  high-level nature and interaction with the entities is almost no different
-  from working with regular Java objects;
+  flexibility of relationships between entities;
 - To ensure data security and integrity, the ORM model is carefully accompanied
   by the necessary constraints;
 - In order to optimize, the ORM model carefully specified the most effective
-  collection loading strategies depending on the business logic requirements;
-- The technology of generating database queries from CRUD repository method
-  names has been used, allowing queries to be edited by simply refactoring the
-  methods names;
-- Pagination at the CRUD repository level;
-- Game and user ratings are calculated using a special SQL trigger.
+  fetching strategies depending on the business logic requirements;
+- SQL triggers are used to calculate rating values.
 
 <a name="textgame"/>
 
 ## Text game format
 
-![Gameplay process](readme/screenshots/3-game-format-1.png)
+![A gameplay process](readme/screenshots/3-game-format-1.png)
 
-During the game, a room is shown to the player, depending on which the player is
-asked to make a particular choice that leads to another room. The game rooms may
-also contain actions, depending on which new choices may appear and routes to
-new rooms become available. The goal of the player is to reach the room which is
-presented by the author of the game as the final room, and to avoid the rooms
-which are presented as dead ends. There can be several final rooms - the player
-can start the game all over again and achieve a different result.
+During the game process, the player is presented with room and a several choices
+leading to other rooms. The game rooms may also contain actions, depending on
+which new choices may appear and routes to new rooms become available. The goal
+of the player is to reach the room which is presented by the author as the final
+room, and to avoid the rooms which are presented as dead ends. There may be
+more than one final room - the player can start the game all over again and
+achieve a different result.
 
 ![Test game constructor](readme/screenshots/3-game-format-2.png)
 
@@ -262,7 +247,7 @@ Has a name and a description. Can contain *choices* or actions (*flags*).
 
 ![Choice](readme/icons/icons8-question-mark-48.png)
 
-Has a name. Can contain a *room* to which the choice leads, or the *conditions*.
+Has a name. Can contain a *room* to which the choice leads, or a *conditions*.
 
 ### Flag
 
@@ -281,7 +266,7 @@ or other *conditions* (a chain of *conditions* can be implemented in that way).
 
 ![Actual game constructor](readme/screenshots/3-game-format-3.png)
 
-- A root node of game elements can only be a *room*;
+- A root node of the game elements can only be a *room*;
 - A *choice* can contain only one *room*;
 - If a *choice* contains a *room* and one or more *conditions* leading to
   other *rooms*, if no *conditions* are triggered, the *choice* leads directly
@@ -301,19 +286,19 @@ or other *conditions* (a chain of *conditions* can be implemented in that way).
 - If a *choice* contains more than one triggered *conditions*, the first 
   *condition* added will take priority;
 - If a *choice* does not contain any *room*, or it contains only one or more 
-  *conditions* that also do not contain a *room* or they have not been triggered,
+  *conditions* that also do not contain a *room*, or they have not been triggered,
   that *choice* will not show up;
 - If the player enters a *room* that has no *choices*, or no *choice* is shown
   in the *room* because it does not contain a *room*, or contains one or more
   untriggered *conditions*, the game is considered over;
-- A *flag* can trigger *conditions* that are behind the *choice* in the
+- A *flag* can trigger *conditions* that are behind a *choice* in the
   current *room*. Suppose a *room* contains a *flag* and a *choice* containing
   a *condition* that is triggered by that *flag*. As long as the player has not
   activated that *flag*, the *choice* containing the *condition* will therefore
   not be shown, and only the *flag* will be shown to the player in that room.
   But once the player activates that *flag*, if that *choice* with the now
   triggered *condition* leads to any *room* or contains a triggered *condition*
-  or a chain of triggered *conditions* leading to any *room*, that *choice* will
+  or a chain of triggered *conditions* leading to a *room*, that *choice* will
   appear in the current *room* (in this way, it is possible to create a chain of
   actions that must be done in order for a new *choice* to appear in the
   current *room*.)
@@ -385,7 +370,6 @@ Password: `testpassword`
 
 ## TODO
 
-- [ ] Replace constants with properties.
 - [ ] Write integration tests for the dynamic content generated by the Thymeleaf
   processor.
 - [ ] Write integration tests for the user input validation.
