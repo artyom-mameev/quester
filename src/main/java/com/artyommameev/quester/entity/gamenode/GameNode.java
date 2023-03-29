@@ -4,6 +4,8 @@ import com.artyommameev.quester.entity.Game;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.DiscriminatorFormula;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
@@ -73,7 +75,7 @@ public abstract class GameNode {
     @Enumerated(EnumType.STRING)
     private NodeType type;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "GAME_NODE_HAVING_GAME_NODE_CONDITION",
             joinColumns = @JoinColumn(name = "GAME_NODE_ID",
@@ -88,7 +90,8 @@ public abstract class GameNode {
     @Setter(AccessLevel.PROTECTED)
     private Condition condition;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OnDelete(action = CASCADE)
     @JoinColumn(
             name = "PARENT_ID",
