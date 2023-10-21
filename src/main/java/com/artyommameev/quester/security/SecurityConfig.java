@@ -98,8 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 "/h2-console/**")
                         .permitAll()
 
-                        .antMatchers(HttpMethod.GET,
-                                "/api/games/{gameId:\\d+}")
+                        .antMatchers(HttpMethod.GET, "/api/games/**")
                         .permitAll()
 
                         .antMatchers(HttpMethod.POST, "/register")
