@@ -812,7 +812,8 @@ public final class Game {
             this.rootNode = game.rootNode;
             this.user = game.user.getUsername();
             this.date = game.date;
-            this.rating = game.rating;
+            //todo
+            this.rating = game.rating == null ? 0 : game.rating;
         }
     }
 
