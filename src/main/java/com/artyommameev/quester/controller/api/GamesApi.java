@@ -10,9 +10,13 @@ import com.artyommameev.quester.entity.User;
 import com.artyommameev.quester.security.user.ActualUser;
 import com.artyommameev.quester.service.GameService;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A controller for handling Games API endpoints, which allows to create,
@@ -27,6 +31,8 @@ public class GamesApi {
     private final GameService gameService;
     private final ActualUser actualUser;
 
+    private final int pageSize;
+
     /**
      * The constructor, through which dependencies are injected by Spring.
      *
@@ -34,12 +40,46 @@ public class GamesApi {
      *                    {@link Game} objects.
      * @param actualUser  the {@link ActualUser} abstraction which represents
      *                    current normal or oAuth2 user.
+     * @param pageSize    the number of games per page.
      * @see GameService
      * @see ActualUser
      */
-    public GamesApi(GameService gameService, ActualUser actualUser) {
+    public GamesApi(GameService gameService, ActualUser actualUser,
+                    @Value("${quester.page-size}") int pageSize) {
         this.gameService = gameService;
         this.actualUser = actualUser;
+        this.pageSize = pageSize;
+    }
+
+    /**
+     * Handles GET requests to endpoint '/api/games'
+     * of the Games API and allows to get a page of published {@link Game}s
+     * sorted by new, in json format.
+     *
+     * @param page the games page
+     * @return a list of {@link JsonReadyGame}s.
+     * @throws Api_NotFoundException if the {@link Game}s page is not found.
+     */
+    //todo test
+    @GetMapping(produces = "application/json")
+    public List<JsonReadyGame> getGames(@RequestParam int page) {
+        try {
+            Page<Game> gamesPage = gameService.getPublishedGamesPage(page,
+                    pageSize, GameService.SortingMode.NEWEST);
+
+            List<Game> games = gamesPage.getContent();
+            return games.stream().map(game -> {
+                try {
+                    return game.getJsonReadyGame();
+                } catch (Game.NotPublishedException e) {
+                    // these games can not be unpublished
+                    throw new RuntimeException(e);
+                }
+            }).collect(Collectors.toList());
+
+        } catch (GameService.IllegalPageValueException e) {
+            throw new Api_NotFoundException(e);
+        }
     }
 
     /**
