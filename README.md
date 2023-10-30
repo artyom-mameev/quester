@@ -11,11 +11,10 @@ architecture, simple and clean code, as well as the ease of support. The project
 is covered by unit/integration tests and documented.
 
 Based on a considerable number of business logic requirements, in order to avoid
-unnecessary complexity and internal inconsistency, in the process of the
-development were considered the advantages and disadvantages of different
-approaches to designing the application architecture and ORM model, and solutions
-that were regarded as the most justified in the context of the application were
-chosen.
+unnecessary complexity and internal inconsistencies, during the development process
+the advantages and disadvantages of different approaches to the design of the 
+application architecture and ORM model were considered, and solutions were chosen 
+that were considered most justified in the context of the application.
 
 ![Spring Text Game Creator - Games Page](readme/screenshots/1-general.png)
 
@@ -204,10 +203,10 @@ H2 in-memory database is used as a database.
 ## Data storage
 
 ![Entities Relationship Diagram](readme/diagram.png)
-<sup>An entities relationship diagram</sup>
+<sup>The entities relationship diagram</sup>
 
 ![Database Schema Diagram](readme/sql_diagram.png)
-<sup>A database schema diagram</sup>
+<sup>The database schema diagram</sup>
 
 - When designing the ORM model, a special attention was paid to usability and
   flexibility of relationships between entities;
